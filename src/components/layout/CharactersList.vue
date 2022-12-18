@@ -1,10 +1,17 @@
 <template>
   <section class="text-gray-600 body-font">
     <div class="container px-5 py-20 mx-auto max-w-7xl">
-      <div class="buttons-wrapper flex justify-center lg:flex-col-1/2 mb-12">
+      <div class="buttons-wrapper flex justify-center lg:flex-col-1/2 mb-10">
+        <button
+          class="px-6 mr-5 text-xl focus:outline-none border hover:border-green-300 rounded transition-colors duration-100 ease-in-out"
+          @click="storeCharacters.goToPage(1)"
+        >
+          Home
+        </button>
+
         <button
           :disabled="storeCharacters.requestFilters.page === 1"
-          class="disabled:pointer-events-none disabled:text-slate-200 text-green-500 py-2 px-6 focus:outline-none hover: border hover:border-green-300 rounded text-lg"
+          class="disabled:pointer-events-none disabled:text-slate-200 py-2 px-6 focus:outline-none hover: border hover:border-green-300 rounded text-lg"
           @click="storeCharacters.previousPage"
         >
           &lt;
@@ -14,16 +21,26 @@
           id="pageNumber"
           v-model="storeCharacters.requestFilters.page"
           type="number"
-          class="page-number w-20 rounded border border-gray-100 focus:border-green-300 focus:ring-5 focus:ring-green-200 text-center outline-none text-gray-700 mx-3 transition-colors duration-200 ease-in-out"
+          min="1"
+          max="42"
+          class="w-20 mx-1 rounded border border-gray-100 focus:border-green-300 focus:ring-5 focus:ring-green-200 text-center outline-none text-gray-700 transition-colors duration-200 ease-in-out"
           @focusout="storeCharacters.getCharacters"
           @keyup.enter="storeCharacters.getCharacters"
         >
 
         <button
-          class="text-green-500 py-2 px-6 focus:outline-none hover: border hover:border-green-300 rounded text-lg"
+          :disabled="storeCharacters.requestFilters.page === 42"
+          class="disabled:pointer-events-none disabled:text-slate-200 py-2 px-6 focus:outline-none hover: border hover:border-green-300 rounded text-lg"
           @click="storeCharacters.nextPage"
         >
           &gt;
+        </button>
+
+        <button
+          class="px-6 ml-5 text-xl focus:outline-none border hover:border-green-300 rounded"
+          @click="storeCharacters.goToPage(42)"
+        >
+          Last
         </button>
       </div>
 
@@ -45,8 +62,6 @@
             <option
               v-for="filter in storeCharacters.filterCategories"
               :key="filter.id"
-              option-class="capitalize"
-              class="capitalize"
               :value="filter"
             >
               {{ filter.name }}
@@ -60,11 +75,8 @@
             name="sub-filters"
             class="capitalize outline-0 inline-block"
           >
-            <option v-if="selectedMainFilter.subFilters.length === 0" selected value="" style="color: lightgray">
-              loading...
-            </option>
 
-            <option v-if="selectedMainFilter.subFilters.length !== 0" selected value="" class="text-center">
+            <option selected value="" class="text-center">
               -
             </option>
 
@@ -74,10 +86,10 @@
           </select>
         </div>
       </div>
-
+      
       <div class="grid grid-cols-4 grid-rows-2 gap-16">
         <CharacterItem
-          v-for="character in filteredCharacters()"
+          v-for="character in storeCharacters.characterItems"
           :key="character.id"
           :character="character"
         />
@@ -92,7 +104,7 @@
   imports
 */
 
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import CharacterItem from '@/components/layout/CharacterItem.vue'
 import { useStoreCharacters } from '@/stores/storeCharacters'
 
@@ -109,18 +121,16 @@ import { useStoreCharacters } from '@/stores/storeCharacters'
 
   const selectedMainFilter = ref('')
   const selectedSubFilter = ref('')
-  const filteredCharacters = () => {
-    if(selectedSubFilter.value === '') {
-      return storeCharacters.allCharacterItems.filter(el => el.id <= 20)
-    } else {
-      storeCharacters.getFilteredCharacters(selectedSubFilter.value)
+  
+/*
+  watchers
+*/
+  watch(selectedSubFilter, (newValue) => {
+    if(newValue) {
+      storeCharacters.getFilteredCharacters(selectedMainFilter.value.name, selectedSubFilter.value)
     }
-  }
+  })
 
-// else {
-//       console.log(storeCharacters.allCharacterItems.filter(el => el[selectedMainFilter.value] === selectedSubFilter.value)
-//       )
-//     }
 
 </script>
 
