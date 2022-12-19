@@ -92,6 +92,8 @@
           v-for="character in storeCharacters.characterItems"
           :key="character.id"
           :character="character"
+          :filter="selectedMainFilter.name"
+          :subFilter="selectedSubFilter"
         />
       </div>
     </div>

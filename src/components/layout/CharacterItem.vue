@@ -15,8 +15,12 @@
     >
     <h2 class="text-gray-900 character-name font-semibold mb-1">{{ character.name }}</h2>
     <div class="text-lg font-semibold">
-      <span class="text-green-500">Species: </span>
-      <span>{{ character.species }}</span>
+      <span
+        class="text-green-500 capitalize"
+      >
+        {{ filter }}:
+      </span>
+      <span>{{ subFilter }}</span>
     </div>
   </a>
 </template>
@@ -27,7 +31,7 @@
   imports
 */
 
-  import { onMounted, ref } from 'vue'
+  import { ref } from 'vue'
 
 /*
   props
@@ -37,6 +41,14 @@
     character: {
       type: Object,
       required: true
+    },
+    filter: {
+      type: String,
+      default: '.'
+    },
+    subFilter: {
+      type: String,
+      default: ''
     }
   })
 
