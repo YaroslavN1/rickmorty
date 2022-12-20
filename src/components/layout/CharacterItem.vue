@@ -18,9 +18,11 @@
       <span
         class="text-green-500 capitalize"
       >
-        {{ filter }}:
+        Species: 
       </span>
-      <span>{{ subFilter }}</span>
+      <span>
+        {{ character.species }}
+      </span>
     </div>
   </a>
 </template>

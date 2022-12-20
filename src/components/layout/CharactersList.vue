@@ -6,7 +6,7 @@
           class="px-6 mr-5 text-xl focus:outline-none border hover:border-green-300 rounded transition-colors duration-100 ease-in-out"
           @click="storeCharacters.goToPage(1)"
         >
-          Home
+          First
         </button>
 
         <button
@@ -29,7 +29,7 @@
         >
 
         <button
-          :disabled="storeCharacters.requestFilters.page === 42"
+          :disabled="storeCharacters.requestFilters.page === 42 || storeCharacters.characterItems.length < 20"
           class="disabled:pointer-events-none disabled:text-slate-200 py-2 px-6 focus:outline-none hover: border hover:border-green-300 rounded text-lg"
           @click="storeCharacters.nextPage"
         >
@@ -37,7 +37,8 @@
         </button>
 
         <button
-          class="px-6 ml-5 text-xl focus:outline-none border hover:border-green-300 rounded"
+          :disabled="selectedSubFilter !== ''"
+          class="disabled:pointer-events-none disabled:text-slate-200 px-6 ml-5 text-xl focus:outline-none border hover:border-green-300 rounded"
           @click="storeCharacters.goToPage(42)"
         >
           Last
@@ -47,7 +48,7 @@
       <div class="filters-wrapper flex mb-6">
         <div class="filters-main">
           <label for="dropdown" class="text-green-500 mr-4">
-            Category:
+            Categories:
           </label>
           <select
             id="filters"
@@ -84,6 +85,15 @@
               {{ subFilter }}
             </option>
           </select>
+
+          <a
+            v-if="selectedMainFilter.name"
+            href=""
+            @click.prevent="resetFilters"
+            class="ml-8 text-red-400 hover:text-red-300 transition-colors duration-100 ease-in-out"
+          >
+           reset
+          </a>
         </div>
       </div>
       
@@ -127,6 +137,16 @@ import { useStoreCharacters } from '@/stores/storeCharacters'
 /*
   watchers
 */
+  watch(selectedMainFilter, (newValue) => {
+    if(newValue) {
+      selectedSubFilter.value = null
+    } else {
+      selectedSubFilter.value = null
+      storeCharacters.requestFilters = { page: 1 }
+      storeCharacters.getCharacters()
+    }
+  })
+
   watch(selectedSubFilter, (newValue) => {
     if(newValue) {
       storeCharacters.getFilteredCharacters(selectedMainFilter.value.name, selectedSubFilter.value)
