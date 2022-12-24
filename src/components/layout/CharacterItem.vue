@@ -13,7 +13,7 @@
       alt="avatar"
       @load="onImgLoaded"
     >
-    <h2 class="text-gray-900 character-name font-semibold mb-1">{{ character.name }}</h2>
+    <h2 class="text-gray-800 character-name font-semibold mb-1">{{ character.name }}</h2>
     <div class="text-lg font-semibold">
       <span
         class="text-green-500 capitalize"

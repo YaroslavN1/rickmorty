@@ -10,10 +10,11 @@ export const useStoreCharacters = defineStore('storeCharacters', {
       requestFilters: {
         page: 1,
       },
-      filterCategories: [
-        // name: [],                                    // add search by name 
-      ],
+      filterCategories: [],
+      charactersFound: false,
+      charactersCount: 1,
       characterItems: [],
+      lastPage: 1
       // charactersLoaded: false
     }
   },
@@ -34,29 +35,70 @@ export const useStoreCharacters = defineStore('storeCharacters', {
     },
 
     async getCharacters() {
-      const {data} = await getCharacters(this.requestFilters)
+      const result = await getCharacters(this.requestFilters)
+      if(result.status === 200) {
+        const data = result.data
+        this.charactersFound = true
+        this.charactersCount = data.info.count
         this.characterItems = data.results
+        this.lastPage = data.info.pages
+        if(this.requestFilters.page > this.lastPage) {
+          this.requestFilters.page = this.lastPage
+        }
+      } else {
+        this.charactersFound = false
+        this.charactersCount = 0
+        this.lastPage = 1
+      }
     },
-
-    goToPage(page) {
-      if(page > 0 && page < 43)
-      this.requestFilters.page = page
-      this.getCharacters()
-    },
-
-    getFilteredCharacters(filter, subFilter) {
-      if(subFilter !== '') {
-        this.requestFilters = { page: 1 }        //reset a page for subfilter
-        this.requestFilters[filter] = subFilter
+    searchByName(name) {
+      if(name !== '') {
+        this.requestFilters.name = name
         this.getCharacters()
       } else {
-        this.requestFilters = { page: 1 }
+        delete this.requestFilters.name
         this.getCharacters()
       }
     },
 
+    async setStoreFilters(filterName, subFilter) {
+      if(subFilter !== 'all') {
+        this.requestFilters[filterName] = subFilter
+        const firstPage = {...this.requestFilters}
+        firstPage.page = 1
+        const { data: {info: { pages } } } = await getCharacters(firstPage)
+        if(this.requestFilters.page > pages) {
+          this.requestFilters.page = pages
+          this.getCharacters()
+        } else {
+          this.getCharacters()
+        }
+      } else {
+        delete this.requestFilters[filterName]
+        const { data: {info: { pages } } } = await getCharacters(this.requestFilters)
+        if(this.requestFilters.page < pages && this.requestFilters.page === this.lastPage) {
+          // console.log('current page is greater')
+          this.requestFilters.page = pages
+          this.getCharacters()
+        } else {
+          this.getCharacters()
+        }
+      }
+    },
+
+    resetStoreFilters() {
+      this.requestFilters = { page: 1 }
+      this.getCharacters()
+    },
+
+    goToPage(page) {
+      if(page > 0 && page <= this.lastPage)
+        this.requestFilters.page = page
+        this.getCharacters()
+    },
+
     nextPage() {
-      if(this.requestFilters.page <= 43)
+      if(this.requestFilters.page <= this.lastPage)
       this.requestFilters.page += 1
       this.getCharacters()
     },

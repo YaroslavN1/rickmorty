@@ -1,7 +1,7 @@
 <template>
   <div 
     id="app"
-    class="characters-list"
+    class="characters-list text-slate-600"
   >
     <Suspense>
       <CharactersList />
@@ -19,7 +19,6 @@
 */
 
   import CharactersList from '@/components/layout/CharactersList.vue'
-  import { onMounted } from 'vue'
   import { useStoreCharacters } from '@/stores/storeCharacters'
 
 /* 
@@ -31,9 +30,8 @@
 /* 
   mounted
 */
-  onMounted(() => {
-    storeCharacters.init()
-  })
+
+  storeCharacters.init()
 
 </script>
 
