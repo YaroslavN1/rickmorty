@@ -9,9 +9,9 @@
       <select
         id="filters"
         v-model="selectedFilter.status"
-        @change="setFilter('status', selectedFilter.status)"
         class="capitalize outline-0 mr-4"
         name="filters"
+        @change="setFilter('status', selectedFilter.status)"
       >
         <option selected value="all">
           - all
@@ -36,9 +36,9 @@
       <select
         id="filters"
         v-model="selectedFilter.species"
-        @change="setFilter('species', selectedFilter.species)"
         class="capitalize outline-0 mr-4"
         name="filters"
+        @change="setFilter('species', selectedFilter.species)"
       >
         <option selected value="all">
           - all
@@ -63,9 +63,9 @@
       <select
         id="filters"
         v-model="selectedFilter.type"
-        @change="setFilter('type', selectedFilter.type)"
         class="capitalize outline-0 mr-4"
         name="filters"
+        @change="setFilter('type', selectedFilter.type)"
       >
         <option selected value="all">
           - all
@@ -90,9 +90,9 @@
       <select
         id="filters"
         v-model="selectedFilter.gender"
-        @change="setFilter('gender', selectedFilter.gender)"
         class="capitalize outline-0 mr-4"
         name="filters"
+        @change="setFilter('gender', selectedFilter.gender)"
       >
         <option selected value="all">
           - all
@@ -111,19 +111,25 @@
     <input
       id="characterName"
       v-model="characterName"
+      placeholder="Type a name..."
       type="text"
-      class="w-20 mx-1 rounded border border-green-300 focus:border-green-300 focus:ring-5 focus:ring-green-200 text-center outline-none text-gray-700 transition-colors duration-200 ease-in-out"
+      class="mx-1 rounded border focus:border-green-300 focus:ring-5 focus:ring-green-200 text-center outline-none transition-colors duration-200 ease-in-out mt-2"
       @input="storeCharacters.searchByName(characterName)"
     >
+
+    <a
+      v-if="Object.keys(storeCharacters.requestFilters).length > 1"
+      href=""
+      class="text-red-400 hover:text-red-300 transition-colors duration-100 ease-in-out"
+      @click.prevent="resetFilters"
+    >
+      clear filters
+    </a>
   </div>
 
-  <a
-      href=""
-      @click.prevent="resetFilters"
-      class="text-red-400 hover:text-red-300 transition-colors duration-100 ease-in-out"
-    >
-      reset filters
-    </a>
+  <div class="text-2xl mb-6">
+    Found: {{ storeCharacters.charactersCount }}
+  </div>
 </template>
 
 <script setup>

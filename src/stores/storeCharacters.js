@@ -15,7 +15,6 @@ export const useStoreCharacters = defineStore('storeCharacters', {
       charactersCount: 1,
       characterItems: [],
       lastPage: 1
-      // charactersLoaded: false
     }
   },
   actions: {
@@ -34,23 +33,29 @@ export const useStoreCharacters = defineStore('storeCharacters', {
       }
     },
 
-    async getCharacters() {
-      const result = await getCharacters(this.requestFilters)
-      if(result.status === 200) {
-        const data = result.data
+    async requestCharacters(requestFilters) {
+      const response = await getCharacters(requestFilters)
+      if(response.status === 200) {
         this.charactersFound = true
-        this.charactersCount = data.info.count
-        this.characterItems = data.results
-        this.lastPage = data.info.pages
-        if(this.requestFilters.page > this.lastPage) {
-          this.requestFilters.page = this.lastPage
-        }
+        return response
       } else {
         this.charactersFound = false
         this.charactersCount = 0
         this.lastPage = 1
       }
     },
+
+    async getCharacters() {
+      const response = await this.requestCharacters(this.requestFilters)
+      const data = response.data
+      this.charactersCount = data.info.count
+      this.characterItems = data.results
+      this.lastPage = data.info.pages
+      if(this.requestFilters.page > this.lastPage) {
+        this.requestFilters.page = this.lastPage
+      }
+    },
+
     searchByName(name) {
       if(name !== '') {
         this.requestFilters.name = name
@@ -64,21 +69,20 @@ export const useStoreCharacters = defineStore('storeCharacters', {
     async setStoreFilters(filterName, subFilter) {
       if(subFilter !== 'all') {
         this.requestFilters[filterName] = subFilter
-        const firstPage = {...this.requestFilters}
-        firstPage.page = 1
-        const { data: {info: { pages } } } = await getCharacters(firstPage)
-        if(this.requestFilters.page > pages) {
-          this.requestFilters.page = pages
+        const filteredFirstPage = {...this.requestFilters}
+        filteredFirstPage.page = 1
+        const { data: { info } } = await this.requestCharacters(filteredFirstPage)
+        if(this.requestFilters.page > info.pages) {
+          this.requestFilters.page = info.pages
           this.getCharacters()
         } else {
           this.getCharacters()
         }
       } else {
         delete this.requestFilters[filterName]
-        const { data: {info: { pages } } } = await getCharacters(this.requestFilters)
-        if(this.requestFilters.page < pages && this.requestFilters.page === this.lastPage) {
-          // console.log('current page is greater')
-          this.requestFilters.page = pages
+        const { data: { info } } = await this.requestCharacters(this.requestFilters)
+        if(this.requestFilters.page < info.pages && this.requestFilters.page === this.lastPage && this.requestFilters.page > 1) {
+          this.requestFilters.page = info.pages
           this.getCharacters()
         } else {
           this.getCharacters()

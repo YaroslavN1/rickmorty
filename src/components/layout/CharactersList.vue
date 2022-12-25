@@ -4,10 +4,6 @@
       <NavigationButtons />
 
       <CharacterFilters />
-
-      <div class="text-2xl mb-6">
-        Found: {{ storeCharacters.charactersCount }}
-      </div>
       
       <div
         v-if="storeCharacters.charactersFound"
