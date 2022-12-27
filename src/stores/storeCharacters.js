@@ -11,8 +11,9 @@ export const useStoreCharacters = defineStore('storeCharacters', {
         page: 1,
       },
       filterCategories: [],
+      charactersLoading: true,
       charactersFound: false,
-      charactersCount: 1,
+      charactersCount: 0,
       characterItems: [],
       lastPage: 1
     }
@@ -36,9 +37,11 @@ export const useStoreCharacters = defineStore('storeCharacters', {
     async requestCharacters(requestFilters) {
       const response = await getCharacters(requestFilters)
       if(response.status === 200) {
+        this.charactersLoading = false
         this.charactersFound = true
         return response
       } else {
+        this.charactersLoading = false
         this.charactersFound = false
         this.charactersCount = 0
         this.lastPage = 1

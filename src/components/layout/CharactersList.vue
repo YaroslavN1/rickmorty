@@ -1,13 +1,15 @@
 <template>
   <section class="body-font">
-    <div class="px-5 py-20 mx-auto max-w-7xl">
-      <NavigationButtons />
-
-      <CharacterFilters />
-      
+    <div class="py-20 mx-auto">
       <div
-        v-if="storeCharacters.charactersFound"
-        class="grid grid-cols-4 grid-rows-2 gap-16"
+        v-if="storeCharacters.charactersLoading"
+      >
+        Characters loading...
+      </div>
+
+      <div
+        v-else-if="storeCharacters.charactersFound"
+        class="grid sm:grid-cols-2 md:grid-cols-4 justify-items-center gap-16"
       >
         <CharacterItem
           v-for="character in storeCharacters.characterItems"
@@ -15,11 +17,12 @@
           :character="character"
         />
       </div>
+
       <div
         v-else
         class="text-slate-400 text-3xl max-w-full flex justify-center align-middle"
       >
-        no characters found
+        No characters found
       </div>
     </div>
   </section>
@@ -32,8 +35,6 @@
 */
 
   import CharacterItem from '@/components/layout/CharacterItem.vue'
-  import CharacterFilters from '@/components/layout/CharacterFilters.vue'
-  import NavigationButtons from '@/components/layout/NavigationButtons.vue'
   import { useStoreCharacters } from '@/stores/storeCharacters'
 
 /* 

@@ -1,5 +1,8 @@
 <template>
-  <a href="/">
+  <a
+    href="/"
+    @click.prevent="modals.characterItem = !modals.characterItem"
+  >
     <img
       v-if="!imgLoaded"
       class="object-cover object-center rounded-lg mb-4"
@@ -25,6 +28,12 @@
       </span>
     </div>
   </a>
+
+  <ModalCharacterItem
+    v-if="modals.characterItem"
+    v-model:characterModal="modals.characterItem"
+    :character="character"
+  />
 </template>
 
 <script setup>
@@ -33,7 +42,8 @@
   imports
 */
 
-  import { ref } from 'vue'
+  import { ref, reactive } from 'vue'
+  import ModalCharacterItem from '@/components/layout/ModalCharacterItem.vue'
 
 /*
   props
@@ -62,6 +72,14 @@
   const onImgLoaded = () => {
     imgLoaded.value = true
   }
+
+/* 
+  modals
+*/
+
+const modals = reactive({
+  characterItem: false
+})
 
 </script>
 

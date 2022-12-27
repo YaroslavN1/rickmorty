@@ -126,10 +126,6 @@
       clear filters
     </a>
   </div>
-
-  <div class="text-2xl mb-6">
-    Found: {{ storeCharacters.charactersCount }}
-  </div>
 </template>
 
 <script setup>

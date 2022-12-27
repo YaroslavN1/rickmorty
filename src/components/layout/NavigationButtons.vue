@@ -36,7 +36,7 @@
     </button>
 
     <button
-      :disabled="storeCharacters.requestFilters.page === storeCharacters.lastPage && storeCharacters.lastPage"
+      :disabled="storeCharacters.requestFilters.page === storeCharacters.lastPage"
       class="disabled:pointer-events-none disabled:text-slate-200 px-6 ml-5 text-xl focus:outline-none border hover:border-green-300 rounded"
       @click="storeCharacters.goToPage(storeCharacters.lastPage)"
     >
