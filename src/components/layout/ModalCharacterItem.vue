@@ -2,19 +2,18 @@
   <teleport
     to=".modals-container"
   >
-    <section class="card-background text-gray-600 bg-white bg-opacity-95 flex justify-center items-center">
+    <section class="modal-background text-gray-600 bg-white bg-opacity-95 flex justify-center items-center">
       <a
         href=""
         @click.prevent="closeModal()"
       >
-        <div class="card-container flex flex-col sm:flex-row p-6 rounded-xl overflow-hidden whitespace-normal bg-white drop-shadow-2xl">
-          <img class="avatar object-cover object-center rounded-md" :src="character.image" alt="blog">
-          <div class="py-8 sm:px-12">
-            <h2 class="text-5xl font-semibold mb-4">{{ character.name }}</h2>
+        <div class="modal-container max-w-4xl flex flex-col sm:flex-row p-6 rounded-md border border-green-200 bg-white drop-shadow-2xl">
+          <img class="object-cover max-w-2xl object-center rounded-md drop-shadow-md" :src="character.image" alt="blog">
+          <div class="grow py-2 sm:pl-8 sm:pr-28">
+            <h2 class="text-4xl font-semibold mb-3">{{ character.name }}</h2>
             <div
-              v-for="entry in characterFilteredKeys"
+              v-for="entry in characterFiltered"
               :key="entry"
-              class="text-2xl font-semibold mb-2"
             >
               <span
                 class="text-green-500 capitalize"
@@ -35,6 +34,12 @@
 <script setup>
 
 /* 
+  imports
+*/
+
+  import { ref } from 'vue'
+
+/* 
   props
 */
 
@@ -48,7 +53,6 @@
       default: false
     }
   })
-
 /* 
   emits
 */
@@ -64,35 +68,30 @@
   }
 
 /* 
-  character destructure
+  character prop destructure
 */
 
-  const characterFilteredKeys = Object.entries(props.character).filter(el => el[0] === 'status' || el[0] === 'species' || el[0] === 'type' || el[0] === 'gender' || el[0] === 'created' || el[0] === 'origin' || el[0] === 'location')
+  const characterKeys = ref(['status', 'species', 'type', 'gender', 'created', 'origin', 'location'])
 
-  characterFilteredKeys[4][1] = characterFilteredKeys[4][1].name
-  characterFilteredKeys[5][1] = characterFilteredKeys[5][1].name
+  const characterFiltered = Object.entries(props.character).filter(el => characterKeys.value.some(key => el[0] === key))
+
+  characterFiltered.forEach(i => {
+    if(i[0] === 'origin' || i[0] === 'location') {
+      i[1] = i[1].name
+    }
+  })
 
 </script>
 
 <style scoped>
 
-.card-background {
+.modal-background {
   position: fixed;
   height: 100vh;
   width: 100vw;
   top: 0;
   left: 0;
   z-index: 1;
-}
-
-@media (max-width: 641px) {
-  .card-container {
-    max-width: 250px;
-  }
-}
-
-.avatar {
-  max-width: 250px;
 }
 
 </style>

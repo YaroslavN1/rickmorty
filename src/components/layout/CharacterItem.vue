@@ -1,39 +1,44 @@
 <template>
-  <a
-    href="/"
-    @click.prevent="modals.characterItem = !modals.characterItem"
+  <div
+    class="p-3 border rounded border-gray-200 bg-white"
   >
-    <img
-      v-if="!imgLoaded"
-      class="object-cover object-center rounded-lg mb-4"
-      src="@/images/avatar_placeholder.jpeg"
-      alt="avatar"
+    <ModalCharacterItem
+      v-if="modals.characterItem"
+      v-model:characterModal="modals.characterItem"
+      :character="character"
+    />
+    <a
+      href="/"
+      @click.prevent="modals.characterItem = !modals.characterItem"
     >
-    <img
-      class="object-cover object-center rounded-lg mb-4"
-      :class="{ hidden: !imgLoaded}"
-      :src="character.image"
-      alt="avatar"
-      @load="onImgLoaded"
-    >
-    <h2 class="text-gray-800 character-name font-semibold mb-1">{{ character.name }}</h2>
-    <div class="text-lg font-semibold">
-      <span
-        class="text-green-500 capitalize"
+      <div
+        class="mb-3 object-cover object-center rounded drop-shadow"
       >
-        Species: 
-      </span>
-      <span>
-        {{ character.species }}
-      </span>
-    </div>
-  </a>
-
-  <ModalCharacterItem
-    v-if="modals.characterItem"
-    v-model:characterModal="modals.characterItem"
-    :character="character"
-  />
+        <img
+          :class="{ hidden: imgLoaded}"
+          src="@/images/avatar_placeholder.jpeg"
+          alt="avatar"
+        >
+        <img
+          :class="{ hidden: !imgLoaded}"
+          :src="character.image"
+          alt="avatar"
+          @load="onImgLoaded"
+        >
+      </div>
+      <h2 class="character-name text-gray-800 text-xl font-semibold leading-snug">{{ character.name }}</h2>
+      <div class="text-sm mb-2">
+        <span
+          class="text-green-500 capitalize"
+        >
+          Species:
+        </span>
+        <span>
+          {{ character.species }}
+        </span>
+      </div>
+    </a>
+  </div>
 </template>
 
 <script setup>
@@ -82,10 +87,3 @@ const modals = reactive({
 })
 
 </script>
-
-<style scoped>
-.character-name {
-  font-size: 17px;
-  line-height: 1.1;
-}
-</style>

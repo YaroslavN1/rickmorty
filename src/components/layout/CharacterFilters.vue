@@ -1,5 +1,13 @@
 <template>
-  <div class="filters-wrapper flex flex-col align-items-start mb-6">
+  <div class="filters-wrapper grid grid-cols-1 gap-1">
+    <input
+      id="characterName"
+      v-model="characterName"
+      placeholder="Search by name..."
+      type="text"
+      class="justify-self-center w-2/5 h-7 mt-2 rounded border text-center focus:border-green-300 focus:ring-5 focus:ring-green-200 outline-none transition-colors duration-200 ease-in-out"
+      @input="storeCharacters.searchByName(characterName)"
+    >
     <label for="dropdown">
       <span
         class="text-green-500 mr-4"
@@ -9,7 +17,7 @@
       <select
         id="filters"
         v-model="selectedFilter.status"
-        class="capitalize outline-0 mr-4"
+        class="capitalize outline-0"
         name="filters"
         @change="setFilter('status', selectedFilter.status)"
       >
@@ -29,14 +37,14 @@
 
     <label for="dropdown">
       <span
-        class="text-green-500 mr-4"
+        class="text-green-500"
       >
         Species: 
       </span>
       <select
         id="filters"
         v-model="selectedFilter.species"
-        class="capitalize outline-0 mr-4"
+        class="capitalize outline-0"
         name="filters"
         @change="setFilter('species', selectedFilter.species)"
       >
@@ -63,7 +71,7 @@
       <select
         id="filters"
         v-model="selectedFilter.type"
-        class="capitalize outline-0 mr-4"
+        class="capitalize outline-0"
         name="filters"
         @change="setFilter('type', selectedFilter.type)"
       >
@@ -90,7 +98,7 @@
       <select
         id="filters"
         v-model="selectedFilter.gender"
-        class="capitalize outline-0 mr-4"
+        class="capitalize outline-0"
         name="filters"
         @change="setFilter('gender', selectedFilter.gender)"
       >
@@ -108,15 +116,6 @@
       </select>
     </label>
 
-    <input
-      id="characterName"
-      v-model="characterName"
-      placeholder="Type a name..."
-      type="text"
-      class="mx-1 rounded border focus:border-green-300 focus:ring-5 focus:ring-green-200 text-center outline-none transition-colors duration-200 ease-in-out mt-2"
-      @input="storeCharacters.searchByName(characterName)"
-    >
-
     <a
       v-if="Object.keys(storeCharacters.requestFilters).length > 1"
       href=""
@@ -125,6 +124,18 @@
     >
       clear filters
     </a>
+
+    <div
+      class="justify-self-center mt-3 flex"
+    >
+      <p class="ml-1">
+        {{ idRange()[0] }} - {{ idRange()[1] }}
+      </p>
+      <p class="ml-2">of</p>
+      <p class="text-green-400 ml-2">
+        {{ storeCharacters.charactersCount }}
+      </p>
+    </div>
   </div>
 </template>
 
@@ -141,6 +152,20 @@
 */
 
   const storeCharacters = useStoreCharacters()
+
+/* 
+  characters id range
+*/
+
+  const idRange = () => {
+    let range = []
+    let arr = [...storeCharacters.characterItems]
+    range.push(storeCharacters.characterItems[0]?.id)
+    range.push(arr.reverse()[0]?.id)
+    return range
+  }
+
+  console.log(idRange())
 
 /* 
   filters
