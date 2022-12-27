@@ -10,11 +10,12 @@ export const useStoreCharacters = defineStore('storeCharacters', {
       requestFilters: {
         page: 1,
       },
-      filterCategories: [
-        // name: [],                                    // add search by name 
-      ],
+      filterCategories: [],
+      charactersLoading: true,
+      charactersFound: false,
+      charactersCount: 0,
       characterItems: [],
-      // charactersLoaded: false
+      lastPage: 1
     }
   },
   actions: {
@@ -33,30 +34,78 @@ export const useStoreCharacters = defineStore('storeCharacters', {
       }
     },
 
+    async requestCharacters(requestFilters) {
+      const response = await getCharacters(requestFilters)
+      if(response.status === 200) {
+        this.charactersLoading = false
+        this.charactersFound = true
+        return response
+      } else {
+        this.charactersLoading = false
+        this.charactersFound = false
+        this.charactersCount = 0
+        this.lastPage = 1
+      }
+    },
+
     async getCharacters() {
-      const {data} = await getCharacters(this.requestFilters)
-        this.characterItems = data.results
+      const response = await this.requestCharacters(this.requestFilters)
+      const data = response.data
+      this.charactersCount = data.info.count
+      this.characterItems = data.results
+      this.lastPage = data.info.pages
+      if(this.requestFilters.page > this.lastPage) {
+        this.requestFilters.page = this.lastPage
+      }
     },
 
-    goToPage(page) {
-      if(page > 0 && page < 43)
-      this.requestFilters.page = page
-      this.getCharacters()
-    },
-
-    getFilteredCharacters(filter, subFilter) {
-      if(subFilter !== '') {
-        this.requestFilters = { page: 1 }        //reset a page for subfilter
-        this.requestFilters[filter] = subFilter
+    searchByName(name) {
+      if(name !== '') {
+        this.requestFilters.name = name
         this.getCharacters()
       } else {
-        this.requestFilters = { page: 1 }
+        delete this.requestFilters.name
         this.getCharacters()
       }
     },
 
+    async setStoreFilters(filterName, subFilter) {
+      if(subFilter !== 'all') {
+        this.requestFilters[filterName] = subFilter
+        const filteredFirstPage = {...this.requestFilters}
+        filteredFirstPage.page = 1
+        const { data: { info } } = await this.requestCharacters(filteredFirstPage)
+        if(this.requestFilters.page > info.pages) {
+          this.requestFilters.page = info.pages
+          this.getCharacters()
+        } else {
+          this.getCharacters()
+        }
+      } else {
+        delete this.requestFilters[filterName]
+        const { data: { info } } = await this.requestCharacters(this.requestFilters)
+        if(this.requestFilters.page < info.pages && this.requestFilters.page === this.lastPage && this.requestFilters.page > 1) {
+          this.requestFilters.page = info.pages
+          this.getCharacters()
+        } else {
+          this.getCharacters()
+        }
+      }
+    },
+
+    resetStoreFilters() {
+      this.requestFilters = { page: 1 }
+      this.getCharacters()
+    },
+
+    goToPage(page) {
+      if(page > 0 && page <= this.lastPage)
+        this.requestFilters.page = page
+        this.getCharacters()
+    },
+
     nextPage() {
-      if(this.requestFilters.page <= 43)
+      if(this.requestFilters.page <= this.lastPage)
       this.requestFilters.page += 1
       this.getCharacters()
     },

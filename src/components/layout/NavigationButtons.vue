@@ -1,0 +1,75 @@
+<template>
+  <div class="buttons-wrapper h-8 flex justify-center">
+    <button
+      :disabled="storeCharacters.requestFilters.page === 1"
+      class="px-4 rounded disabled:pointer-events-none disabled:text-slate-200 focus:outline-none border hover:border-green-300 transition-colors duration-100 ease-in-out"
+      @click="storeCharacters.goToPage(1)"
+    >
+      First
+    </button>
+
+    <button
+      :disabled="storeCharacters.requestFilters.page === 1"
+      class="px-4 ml-5 disabled:pointer-events-none disabled:text-slate-200 focus:outline-none hover: border hover:border-green-300 rounded"
+      @click="storeCharacters.previousPage"
+    >
+      &lt;
+    </button>
+
+    <input
+      id="pageNumber"
+      v-model="storeCharacters.requestFilters.page"
+      type="number"
+      min="1"
+      max="42"
+      class="w-14 mx-1 rounded border text-gray-700 border-gray-100 focus:border-green-300 text-center outline-none transition-colors duration-200 ease-in-out"
+      @focusout="storeCharacters.getCharacters"
+      @keyup.enter="storeCharacters.getCharacters"
+    >
+
+    <button
+      :disabled="storeCharacters.requestFilters.page === storeCharacters.lastPage || storeCharacters.characterItems.length < 20"
+      class="px-4 border disabled:pointer-events-none disabled:text-slate-200 focus:outline-none hover:border hover:border-green-300 rounded"
+      @click="storeCharacters.nextPage"
+    >
+      &gt;
+    </button>
+
+    <button
+      :disabled="storeCharacters.requestFilters.page === storeCharacters.lastPage"
+      class="px-4 ml-5 rounded disabled:pointer-events-none disabled:text-slate-200 focus:outline-none border hover:border-green-300"
+      @click="storeCharacters.goToPage(storeCharacters.lastPage)"
+    >
+      Last
+    </button>
+  </div>
+</template>
+
+<script setup>
+/* 
+  imports
+*/
+
+  import { useStoreCharacters } from '@/stores/storeCharacters'
+
+/* 
+  stores
+*/
+
+  const storeCharacters = useStoreCharacters()
+
+</script>
+
+<style scoped>
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+</style>
