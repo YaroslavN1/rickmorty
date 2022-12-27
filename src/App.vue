@@ -4,20 +4,22 @@
     class="characters-list text-slate-600"
   >
     <main
-      class=" max-w-7xl mx-auto mt-20"
+      class="max-w-5xl mx-auto p-10"
     >
       <div class="modals-container" />
 
-      <NavigationButtons />
-
       <CharacterFilters />
-      <div class="text-2xl mb-6">
-        Found: {{ storeCharacters.charactersCount }} {{ storeCharacters.charactersCount === 1 ? 'character' : 'characters' }}.
-      </div>
+
+      <NavigationButtons
+        class="mt-6"
+      />
+
       <Suspense>
-        <CharactersList />
+        <CharactersList
+          class="mt-8"
+        />
         <template #fallback>
-          LOADING.....
+          Loading characters...
         </template>
       </Suspense>
     </main>

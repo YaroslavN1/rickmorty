@@ -1,6 +1,6 @@
 <template>
-  <section class="body-font">
-    <div class="py-20 mx-auto">
+  <section class="h-full">
+    <div class="mx-auto">
       <div
         v-if="storeCharacters.charactersLoading"
       >
@@ -9,7 +9,7 @@
 
       <div
         v-else-if="storeCharacters.charactersFound"
-        class="grid sm:grid-cols-2 md:grid-cols-4 justify-items-center gap-16"
+        class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 justify-items-center gap-6"
       >
         <CharacterItem
           v-for="character in storeCharacters.characterItems"
@@ -20,9 +20,9 @@
 
       <div
         v-else
-        class="text-slate-400 text-3xl max-w-full flex justify-center align-middle"
+        class="text-gray-200 text-2xl max-w-full flex justify-center items-center"
       >
-        No characters found
+        No characters found...
       </div>
     </div>
   </section>
