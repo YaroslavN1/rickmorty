@@ -1,141 +1,90 @@
 <template>
-  <div class="filters-wrapper grid grid-cols-1 gap-1">
+  <div
+    class="flex place-content-center"
+  >
+    <a
+      href=""
+      class="mt-4 text-xl text-green-400 hover:text-green-300 transition-colors duration-100 ease-in-out"
+      :class="[ openCloseFilters ? 'text-green-400' : 'text-gray-300']"
+      @click.prevent="openCloseFilters = !openCloseFilters"
+    >
+      <div class="flex">
+        <p>Filters</p>
+        <p
+          v-if="Object.keys(storeCharacters.requestFilters).length > 1"
+          class="text-red-500 text-xl ml-1"
+        >
+          &bull;
+        </p>
+      </div>
+    </a>
+  </div>
+
+  <div
+    class="filters-wrapper flex flex-col items-center transition-all duration-300 ease-in-out"
+    :class="{ 'h-0': openCloseFilters, 'overflow-hidden': openCloseFilters}"
+  >
     <input
       id="characterName"
       v-model="selectedFilters.name"
       placeholder="Search by name..."
       type="text"
-      class="justify-self-center w-2/5 h-7 mt-2 rounded border text-center focus:border-green-300 focus:ring-5 focus:ring-green-200 outline-none transition-colors duration-200 ease-in-out"
+      class="w-2/5 h-8 mt-4 rounded-2xl border border-gray-300 text-center placeholder:text-gray-300 drop-shadow-sm focus:border-green-300 focus:ring-5 focus:ring-green-200 outline-none transition-colors duration-200 ease-in-out"
       @input="storeCharacters.searchByName(selectedFilters.name)"
     >
-    <label for="dropdown">
-      <span
-        class="text-green-500 mr-4"
+    <div
+      class="dropdown-wrapper max-w-xl grid grid-cols-2 gap-x-10 gap-y-1 mt-6"
+    >
+      <label
+        v-for="filter in filterCategories"
+        :key="filter.id"
+        for="dropdown"
+        class="flex"
       >
-        Status: 
-      </span>
-      <select
-        id="filters"
-        v-model="selectedFilters.status"
-        class="capitalize outline-0"
-        name="filters"
-        @change="setFilter('status', selectedFilters.status)"
-      >
-        <option selected value="all">
-          - all
-        </option>
-
-        <option
-          v-for="filter in statusFilters"
-          :key="filter"
-          :value="filter"
+        <span class="capitalize text-green-500 mr-2">
+          {{ filter.name }}:
+        </span>
+        <select
+          id="filters"
+          v-model="selectedFilters[filter.name]"
+          class="capitalize outline-0 w-full text-center text-ellipsis"
+          name="filters"
+          @change="setFilter(filter.name, selectedFilters[filter.name])"
         >
-          {{ filter }}
-        </option>
-      </select>
-    </label>
-
-    <label for="dropdown">
-      <span
-        class="text-green-500"
-      >
-        Species: 
-      </span>
-      <select
-        id="filters"
-        v-model="selectedFilters.species"
-        class="capitalize outline-0"
-        name="filters"
-        @change="setFilter('species', selectedFilters.species)"
-      >
-        <option selected value="all">
-          - all
-        </option>
-
-        <option
-          v-for="filter in speciesFilters"
-          :key="filter"
-          :value="filter"
-        >
-          {{ filter }}
-        </option>
-      </select>
-    </label>
-
-    <label for="dropdown">
-      <span
-        class="text-green-500 mr-4"
-      >
-        Type: 
-      </span>
-      <select
-        id="filters"
-        v-model="selectedFilters.type"
-        class="capitalize outline-0"
-        name="filters"
-        @change="setFilter('type', selectedFilters.type)"
-      >
-        <option selected value="all">
-          - all
-        </option>
-
-        <option
-          v-for="filter in typeFilters"
-          :key="filter"
-          :value="filter"
-        >
-          {{ filter }}
-        </option>
-      </select>
-    </label>
-
-    <label for="dropdown">
-      <span
-        class="text-green-500 mr-4"
-      >
-        Gender: 
-      </span>
-      <select
-        id="filters"
-        v-model="selectedFilters.gender"
-        class="capitalize outline-0"
-        name="filters"
-        @change="setFilter('gender', selectedFilters.gender)"
-      >
-        <option selected value="all">
-          - all
-        </option>
-
-        <option
-          v-for="filter in genderFilters"
-          :key="filter"
-          :value="filter"
-        >
-          {{ filter }}
-        </option>
-      </select>
-    </label>
+          <option selected value="all">
+            -
+          </option>
+          <option
+            v-for="subFilter in filter.subFilters"
+            :key="subFilter"
+            :value="subFilter"
+          >
+            {{ subFilter }}
+          </option>
+        </select>
+      </label>
+    </div>
 
     <a
       v-if="Object.keys(storeCharacters.requestFilters).length > 1"
       href=""
-      class="text-red-400 hover:text-red-300 transition-colors duration-100 ease-in-out"
+      class="mt-4 underline text-red-400 hover:text-red-300 transition-colors duration-100 ease-in-out"
       @click.prevent="resetFilters"
     >
       clear filters
     </a>
+  </div>
 
-    <div
-      class="justify-self-center mt-3 flex"
-    >
-      <p class="ml-1">
-        {{ idRange()[0] }} - {{ idRange()[1] }}
-      </p>
-      <p class="ml-2">of</p>
-      <p class="text-green-400 ml-2">
-        {{ storeCharacters.charactersCount }}
-      </p>
-    </div>
+  <div
+    class="mt-6 flex place-content-center"
+  >
+    <p class="ml-1">
+      {{ idRange()[0] }} - {{ idRange()[1] }}
+    </p>
+    <p class="ml-2">of</p>
+    <p class="text-green-400 ml-2">
+      {{ storeCharacters.charactersCount }}
+    </p>
   </div>
 </template>
 
@@ -153,20 +102,29 @@
 
   const storeCharacters = useStoreCharacters()
 
+/*
+  open close filters
+*/
+
+  const openCloseFilters = ref(true)
+
 /* 
   characters id range
 */
 
-  // const idRange = ref([1, 20])
   const idRange = () => {
     let range = []
-    if(storeCharacters.requestFilters.page !== storeCharacters.lastPage) {
-      range.push(1 + (storeCharacters.requestFilters.page - 1) * storeCharacters.characterItems.length)
-      range.push(storeCharacters.requestFilters.page * storeCharacters.characterItems.length)
+    const currentPage = storeCharacters.requestFilters.page
+    const charactersLength = storeCharacters.characterItems.length
+    const charactersCount = storeCharacters.charactersCount
+    
+    if(currentPage !== storeCharacters.lastPage) {
+      range.push(1 + (currentPage - 1) * charactersLength)
+      range.push(currentPage * charactersLength)
       return range
     } else {
-      range.push(storeCharacters.charactersCount - (storeCharacters.characterItems.length - 1))
-      range.push(storeCharacters.charactersCount)
+      range.push(charactersCount - (charactersLength - 1))
+      range.push(charactersCount)
       return range
     }
   }
@@ -175,8 +133,6 @@
 */
 
   const filterCategories = storeCharacters.filterCategories
-
-  const [{subFilters: statusFilters}, {subFilters: speciesFilters}, {subFilters: typeFilters}, {subFilters: genderFilters}] = filterCategories
 
 /* 
   selected filters default
