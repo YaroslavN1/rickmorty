@@ -3,26 +3,24 @@
     id="app"
     class="characters-list text-slate-600"
   >
-    <main
-      class="max-w-5xl mx-auto p-10"
-    >
-      <div class="modals-container" />
+    <PageHeader />
 
+    <main class="max-w-5xl mx-auto p-10">
       <CharacterFilters />
 
-      <NavigationButtons
-        class="mt-6"
-      />
+      <NavigationButtons class="mt-6" />
 
       <Suspense>
-        <CharactersList
-          class="mt-8"
-        />
+        <CharactersList class="my-10" />
         <template #fallback>
           Loading characters...
         </template>
       </Suspense>
+
+      <NavigationButtons class="mb-6" />
     </main>
+
+    <PageFooter />
   </div>
 </template>
 
@@ -31,6 +29,8 @@
 /* 
   imports
 */
+  import PageHeader from '@/components/layout/PageHeader.vue'
+  import PageFooter from '@/components/layout/PageFooter.vue'
   import CharacterFilters from '@/components/layout/CharacterFilters.vue'
   import NavigationButtons from '@/components/layout/NavigationButtons.vue'
   import CharactersList from '@/components/layout/CharactersList.vue'
@@ -49,11 +49,3 @@
   storeCharacters.init()
 
 </script>
-
-<style scoped>
-
-.modals-container {
-  position: relative;
-}
-
-</style>

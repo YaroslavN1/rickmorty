@@ -1,6 +1,6 @@
 <template>
   <div
-    class="p-3 border rounded border-gray-200 bg-white"
+    class="p-3 border rounded drop-shadow-sm border-gray-200 bg-white"
   >
     <ModalCharacterItem
       v-if="modals.characterItem"
@@ -12,7 +12,7 @@
       @click.prevent="modals.characterItem = !modals.characterItem"
     >
       <div
-        class="mb-3 object-cover object-center rounded drop-shadow"
+        class="mb-3 object-cover object-center rounded-sm overflow-hidden"
       >
         <img
           :class="{ hidden: imgLoaded}"
@@ -25,6 +25,30 @@
           alt="avatar"
           @load="onImgLoaded"
         >
+        <!-- <picture
+          :class="{ hidden: imgLoaded}"
+        >
+          <source type="image/webp" srcset="@/images/avatar_placeholder.webp">
+          <source type="image/jpeg" srcset="@/images/avatar_placeholder.jpeg">
+          <img
+            src="@/images/avatar_placeholder.jpeg"
+            alt="avatar"
+          >
+        </picture>
+
+        <picture
+          :class="{ hidden: !imgLoaded}"
+        >
+          <source type="image/webp" srcset="@/images/avatar_placeholder.webp" @load="onImgLoaded">
+          <source type="image/jpeg" srcset="@/images/avatar_placeholder.jpeg" @load="onImgLoaded">
+          <img
+            :src="character.image"
+            alt="avatar"
+            @load="onImgLoaded"
+          >
+        </picture> -->
+
+
       </div>
       <h2 class="character-name text-gray-800 text-xl font-semibold leading-snug">{{ character.name }}</h2>
       <div class="text-sm mb-2">
