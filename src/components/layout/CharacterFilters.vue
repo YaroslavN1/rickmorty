@@ -4,19 +4,19 @@
   >
     <a
       href=""
-      class="mt-4 text-xl text-green-400 hover:text-green-300 transition-colors duration-100 ease-in-out"
-      :class="[ openCloseFilters ? 'text-green-400' : 'text-gray-300']"
+      class="text-2xl flex relative"
       @click.prevent="openCloseFilters = !openCloseFilters"
     >
-      <div class="flex">
-        <p>Filters</p>
-        <p
-          v-if="Object.keys(storeCharacters.requestFilters).length > 1"
-          class="text-red-500 text-xl ml-1"
-        >
-          &bull;
-        </p>
-      </div>
+      <i 
+        class="fa-solid fa-filter hover:text-green-200 transition-colors duration-100 ease-in-out"
+        :class="[ openCloseFilters ? 'text-green-300' : 'text-gray-300']"
+      />
+      <p
+        v-if="Object.keys(storeCharacters.requestFilters).length > 1"
+        class="text-red-500 absolute top-0 right-0 ml-1"
+      >
+        <div class="bg-red-500 w-2 h-2 rounded-2xl"></div>
+      </p>
     </a>
   </div>
 
@@ -29,7 +29,7 @@
       v-model="selectedFilters.name"
       placeholder="Search by name..."
       type="text"
-      class="w-2/5 h-8 mt-4 rounded-2xl border border-gray-300 text-center placeholder:text-gray-300 drop-shadow-sm focus:border-green-300 focus:ring-5 focus:ring-green-200 outline-none transition-colors duration-200 ease-in-out"
+      class="w-2/5 h-8 mt-6 rounded-2xl border border-gray-300 text-center placeholder:text-gray-300 drop-shadow-sm focus:border-green-300 focus:ring-5 focus:ring-green-200 outline-none transition-colors duration-200 ease-in-out"
       @input="storeCharacters.searchByName(selectedFilters.name)"
     >
     <div

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="p-3 border rounded drop-shadow-sm border-gray-200 bg-white"
+    class="p-2 border rounded-md drop-shadow-sm border-gray-200 bg-white"
   >
     <ModalCharacterItem
       v-if="modals.characterItem"
@@ -12,7 +12,7 @@
       @click.prevent="modals.characterItem = !modals.characterItem"
     >
       <div
-        class="mb-3 object-cover object-center rounded-sm overflow-hidden"
+        class="mb-3 object-cover object-center rounded overflow-hidden"
       >
         <img
           :class="{ hidden: imgLoaded}"

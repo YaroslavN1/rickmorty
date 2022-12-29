@@ -11,7 +11,7 @@
 
       <div
         v-else-if="storeCharacters.charactersFound"
-        class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 justify-items-center gap-6"
+        class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 justify-items-center gap-4 md:gap-6"
       >
         <CharacterItem
           v-for="character in storeCharacters.characterItems"

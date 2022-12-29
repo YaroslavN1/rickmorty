@@ -5,7 +5,7 @@
   >
     <PageHeader />
 
-    <main class="max-w-5xl mx-auto p-10">
+    <main class="max-w-5xl mx-auto mt-4 p-6">
       <CharacterFilters />
 
       <NavigationButtons class="mt-6" />

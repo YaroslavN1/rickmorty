@@ -7,21 +7,22 @@
         href=""
         @click.prevent="closeModal()"
       >
-        <div class="modal-container m-4 max-w-4xl flex flex-col sm:flex-row p-5 rounded-md border border-gray-200 bg-white drop-shadow-2xl">
-          <img class="object-cover w-64 object-center rounded drop-shadow-md" :src="character.image" alt="blog">
+        <div class="modal-container m-4 p-3 max-w-3xl sm:p-5 flex flex-col sm:flex-row rounded-md border border-gray-200 bg-white drop-shadow-2xl">
+          <img class="object-cover object-center rounded drop-shadow-md" :src="character.image" alt="blog">
           <div class="grow py-2 sm:py-0 sm:pl-8 sm:pr-28">
             <h2 class="text-4xl font-semibold mb-3">{{ character.name }}</h2>
             <div
-              v-for="entry in characterFiltered"
-              :key="entry"
+              v-for="key in characterKeysFiltered"
+              :key="key"
+              class="text-md font-semibold"
             >
               <span
                 class="text-green-500 capitalize"
               >
-                {{ entry[0] }}:
+                {{ key[0] }}:
               </span>
               <span>
-                {{ entry[1] === '' ? '-' : entry[1] }}
+                {{ key[1] === '' ? '-' : key[1] }}
               </span>
             </div>
           </div>
@@ -73,9 +74,9 @@
 
   const characterKeys = ref(['status', 'species', 'type', 'gender', 'created', 'origin', 'location'])
 
-  const characterFiltered = Object.entries(props.character).filter(el => characterKeys.value.some(key => el[0] === key))
+  const characterKeysFiltered = Object.entries(props.character).filter(el => characterKeys.value.some(key => el[0] === key))
 
-  characterFiltered.forEach(i => {
+  characterKeysFiltered.forEach(i => {
     if(i[0] === 'origin' || i[0] === 'location') {
       i[1] = i[1].name
     }
