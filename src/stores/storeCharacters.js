@@ -20,22 +20,29 @@ export const useStoreCharacters = defineStore('storeCharacters', {
   },
   actions: {
     init(){
-      this.getPageFromSessionStorage()
-      this.getCharacters()
       this.filterCategories = filterCategories
+      this.getFiltersFromSessionStorage()
+      this.getCharacters()
     },
 
-    getPageFromSessionStorage() {
-      const storedPage = Number(sessionStorage.getItem('page'))
-      if(!storedPage) {
-        sessionStorage.setItem('page', 1)
+    getFiltersFromSessionStorage() {
+      if(!sessionStorage.getItem('page')) {
+        sessionStorage.setItem('page', this.requestFilters.page)
       } else {
-        this.requestFilters.page = storedPage
+        const storedFilters = {}
+        storedFilters.page = Number(sessionStorage.getItem('page'))
+        filterCategories.forEach(el => {
+          if(sessionStorage.getItem(el.name)) {
+          storedFilters[el.name] = sessionStorage.getItem(el.name)
+          }
+        })
+        this.requestFilters = storedFilters
       }
     },
 
     async requestCharacters(requestFilters) {
       const response = await getCharacters(requestFilters)
+      sessionStorage.setItem('page', this.requestFilters.page)
       if(response.status === 200) {
         this.charactersLoading = false
         this.charactersFound = true
@@ -71,30 +78,24 @@ export const useStoreCharacters = defineStore('storeCharacters', {
 
     async setStoreFilters(filterName, subFilter) {
       if(subFilter !== 'all') {
+        this.requestFilters.page = 1
         this.requestFilters[filterName] = subFilter
-        const filteredFirstPage = {...this.requestFilters}
-        filteredFirstPage.page = 1
-        const { data: { info } } = await this.requestCharacters(filteredFirstPage)
-        if(this.requestFilters.page > info.pages) {
-          this.requestFilters.page = info.pages
-          this.getCharacters()
-        } else {
-          this.getCharacters()
-        }
+        sessionStorage.setItem(filterName, subFilter)
+        this.getCharacters()
       } else {
         delete this.requestFilters[filterName]
-        const { data: { info } } = await this.requestCharacters(this.requestFilters)
-        if(this.requestFilters.page < info.pages && this.requestFilters.page === this.lastPage && this.requestFilters.page > 1) {
-          this.requestFilters.page = info.pages
-          this.getCharacters()
-        } else {
-          this.getCharacters()
-        }
+        sessionStorage.removeItem(filterName, subFilter)
+        this.getCharacters()
       }
     },
 
     resetStoreFilters() {
       this.requestFilters = { page: 1 }
+      filterCategories.forEach(el => {
+        if(sessionStorage.getItem(el.name)) {
+        sessionStorage.removeItem(el.name)
+        }
+      })
       this.getCharacters()
     },
 
