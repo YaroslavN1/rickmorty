@@ -2,7 +2,7 @@
   <div class="buttons-wrapper h-8 flex justify-center">
     <button
       :disabled="storeCharacters.requestFilters.page === 1"
-      class="px-4 rounded disabled:pointer-events-none disabled:text-slate-200 focus:outline-none border hover:border-green-300 transition-colors duration-100 ease-in-out"
+      class="px-4 rounded disabled:pointer-events-none disabled:text-slate-200 focus:outline-none border drop-shadow-sm bg-white hover:border-green-300 transition-colors duration-100 ease-in-out"
       @click="storeCharacters.goToPage(1)"
     >
       First
@@ -10,7 +10,7 @@
 
     <button
       :disabled="storeCharacters.requestFilters.page === 1"
-      class="px-4 ml-5 disabled:pointer-events-none disabled:text-slate-200 focus:outline-none hover: border hover:border-green-300 rounded"
+      class="px-4 ml-5 disabled:pointer-events-none disabled:text-slate-200 focus:outline-none hover: border drop-shadow-sm bg-white hover:border-green-300 rounded"
       @click="storeCharacters.previousPage"
     >
       &lt;
@@ -22,14 +22,14 @@
       type="number"
       min="1"
       max="42"
-      class="w-14 mx-1 rounded border text-gray-700 border-gray-100 focus:border-green-300 text-center outline-none transition-colors duration-200 ease-in-out"
+      class="w-14 mx-1 text-gray-700 rounded border border-gray-100 drop-shadow-sm bg-white focus:border-green-300 text-center outline-none transition-colors duration-200 ease-in-out"
       @focusout="storeCharacters.getCharacters"
       @keyup.enter="storeCharacters.getCharacters"
     >
 
     <button
       :disabled="storeCharacters.requestFilters.page === storeCharacters.lastPage || storeCharacters.characterItems.length < 20"
-      class="px-4 border disabled:pointer-events-none disabled:text-slate-200 focus:outline-none hover:border hover:border-green-300 rounded"
+      class="px-4 border drop-shadow-sm bg-white disabled:pointer-events-none disabled:text-slate-200 focus:outline-none hover:border hover:border-green-300 rounded"
       @click="storeCharacters.nextPage"
     >
       &gt;
@@ -37,7 +37,7 @@
 
     <button
       :disabled="storeCharacters.requestFilters.page === storeCharacters.lastPage"
-      class="px-4 ml-5 rounded disabled:pointer-events-none disabled:text-slate-200 focus:outline-none border hover:border-green-300"
+      class="px-4 ml-5 rounded drop-shadow-sm bg-white disabled:pointer-events-none disabled:text-slate-200 focus:outline-none border hover:border-green-300"
       @click="storeCharacters.goToPage(storeCharacters.lastPage)"
     >
       Last

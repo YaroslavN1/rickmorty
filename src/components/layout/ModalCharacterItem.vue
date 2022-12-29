@@ -7,9 +7,9 @@
         href=""
         @click.prevent="closeModal()"
       >
-        <div class="modal-container max-w-4xl flex flex-col sm:flex-row p-6 rounded-md border border-green-200 bg-white drop-shadow-2xl">
-          <img class="object-cover max-w-2xl object-center rounded-md drop-shadow-md" :src="character.image" alt="blog">
-          <div class="grow py-2 sm:pl-8 sm:pr-28">
+        <div class="modal-container m-4 max-w-4xl flex flex-col sm:flex-row p-5 rounded-md border border-gray-200 bg-white drop-shadow-2xl">
+          <img class="object-cover w-64 object-center rounded drop-shadow-md" :src="character.image" alt="blog">
+          <div class="grow py-2 sm:py-0 sm:pl-8 sm:pr-28">
             <h2 class="text-4xl font-semibold mb-3">{{ character.name }}</h2>
             <div
               v-for="entry in characterFiltered"
