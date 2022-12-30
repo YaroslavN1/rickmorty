@@ -14,7 +14,8 @@
       />
       <p
         v-if="Object.keys(storeCharacters.requestFilters).length > 1"
-        class="text-red-500 absolute top-0 right-0 ml-1"
+        class="text-red-500 absolute ml-1"
+        style="top: -1px; right: -1px"
       >
         <div class="bg-red-500 w-2 h-2 rounded-2xl" />
       </p>
@@ -119,7 +120,9 @@
     const charactersLength = storeCharacters.characterItems.length
     const charactersCount = storeCharacters.charactersCount
     
-    if(currentPage !== storeCharacters.lastPage) {
+    if(charactersLength === 0) {
+      return range = [0, 0]
+    } else if(currentPage !== storeCharacters.lastPage) {
       range.push(1 + (currentPage - 1) * charactersLength)
       range.push(currentPage * charactersLength)
       return range
@@ -182,13 +185,12 @@
   filters icon animation handling
 */
 
-let animateIcon = true  //set to non-reactive to not trigger re-render with new value, meant for next page refresh
+let animateIcon = ref(true)
 
 if(!sessionStorage.getItem('animateIcon')) {
   sessionStorage.setItem('animateIcon', true)
-  animateIcon = true
 } else {
-  animateIcon = false
+  animateIcon.value = false
 }
 
 
