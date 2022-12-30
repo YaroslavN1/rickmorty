@@ -10,7 +10,7 @@
 
     <button
       :disabled="storeCharacters.requestFilters.page === 1"
-      class="px-4 ml-5 disabled:pointer-events-none disabled:text-slate-200 focus:outline-none hover: border drop-shadow-sm bg-white hover:border-green-300 rounded"
+      class="px-4 ml-5 drop-shadow-sm bg-white disabled:pointer-events-none disabled:text-slate-200 focus:outline-none border hover:border-green-300 rounded"
       @click="storeCharacters.previousPage"
     >
       &lt;

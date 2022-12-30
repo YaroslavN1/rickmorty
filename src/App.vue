@@ -13,7 +13,11 @@
       <Suspense>
         <CharactersList class="my-10" />
         <template #fallback>
-          Loading characters...
+          <div
+            class="text-gray-200 text-2xl max-w-full flex justify-center items-center"
+          >
+            Characters loading...
+          </div>
         </template>
       </Suspense>
 

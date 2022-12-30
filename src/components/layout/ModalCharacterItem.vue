@@ -2,15 +2,19 @@
   <teleport
     to=".modals-container"
   >
-    <section class="modal-background text-gray-600 bg-white bg-opacity-95 flex justify-center items-center">
+    <section 
+      class="modal-background absolute p-3 z-10 top-0 left-0 w-full h-full text-gray-600 bg-white bg-opacity-95 flex justify-center items-center"
+    >
       <a
+        ref="characterModalRef"  
         href=""
         @click.prevent="closeModal()"
       >
-        <div class="modal-container m-4 p-3 max-w-3xl sm:p-5 flex flex-col sm:flex-row rounded-md border border-gray-200 bg-white drop-shadow-2xl">
+        <div class="modal-container p-4 sm:p-5 fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-full max-w-xs sm:max-w-3xl flex flex-col sm:flex-row rounded-md border border-gray-200 bg-white drop-shadow-2xl">
           <img class="object-cover object-center rounded drop-shadow-md" :src="character.image" alt="blog">
-          <div class="grow py-2 sm:py-0 sm:pl-8 sm:pr-28">
-            <h2 class="text-4xl font-semibold mb-3">{{ character.name }}</h2>
+
+          <div class="py-2 sm:py-0 sm:pl-8 sm:pr-28">
+            <h2 class="text-3xl sm:text-4xl font-semibold mb-3">{{ character.name }}</h2>
             <div
               v-for="key in characterKeysFiltered"
               :key="key"
@@ -26,6 +30,12 @@
               </span>
             </div>
           </div>
+        
+          <div
+            class="h-7 w-7 sm:h-6 sm:w-6 sm:text-xs rounded-full absolute top-5 right-5 flex justify-center items-center border border-gray-300 bg-gray-50 shrink-0"
+          >
+            <i class="fa-solid fa-x text-gray-500"></i>
+          </div>
         </div>
       </a>
     </section>
@@ -39,6 +49,7 @@
 */
 
   import { ref } from 'vue'
+  import { onClickOutside } from '@vueuse/core'
 
 /* 
   props
@@ -68,6 +79,15 @@
     emit('update:characterModal', false)
   }
 
+
+/* 
+  close on click outside
+*/
+
+  const characterModalRef = ref(null)
+
+  onClickOutside(characterModalRef, () => closeModal())
+
 /* 
   character prop destructure
 */
@@ -83,16 +103,3 @@
   })
 
 </script>
-
-<style scoped>
-
-.modal-background {
-  position: fixed;
-  height: 100vh;
-  width: 100vw;
-  top: 0;
-  left: 0;
-  z-index: 1;
-}
-
-</style>

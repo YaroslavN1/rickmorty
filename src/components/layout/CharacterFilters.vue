@@ -4,10 +4,11 @@
   >
     <a
       href=""
-      class="text-2xl flex relative"
+      class="text-xl flex relative"
+      :class="{ 'filters-icon-anim': animateIcon }"
       @click.prevent="openCloseFilters = !openCloseFilters"
     >
-      <i 
+      <i
         class="fa-solid fa-filter hover:text-green-200 transition-colors duration-100 ease-in-out"
         :class="[ openCloseFilters ? 'text-green-300' : 'text-gray-300']"
       />
@@ -15,7 +16,7 @@
         v-if="Object.keys(storeCharacters.requestFilters).length > 1"
         class="text-red-500 absolute top-0 right-0 ml-1"
       >
-        <div class="bg-red-500 w-2 h-2 rounded-2xl"></div>
+        <div class="bg-red-500 w-2 h-2 rounded-2xl" />
       </p>
     </a>
   </div>
@@ -160,21 +161,42 @@
   reset filters
 */
   const resetFilters = () => {
+    selectedFilters.value.name = ''
     selectedFilters.value.status = 'all'
     selectedFilters.value.species = 'all'
     selectedFilters.value.type = 'all'
     selectedFilters.value.gender = 'all'
-    selectedFilters.value.name = ''
     storeCharacters.resetStoreFilters()
   }
 
 
 /* 
-  set request filter in store
+  call filters request method in store
 */
 
   const setFilter = (filterName, subFilter) => {
     storeCharacters.setStoreFilters(filterName, subFilter)
   }
 
+/*
+  filters icon animation handling
+*/
+
+let animateIcon = true  //set to non-reactive to not trigger re-render with new value, meant for next page refresh
+
+if(!sessionStorage.getItem('animateIcon')) {
+  sessionStorage.setItem('animateIcon', true)
+  animateIcon = true
+} else {
+  animateIcon = false
+}
+
+
 </script>
+
+<style scoped>
+  .filters-icon-anim {
+    animation: flash;
+    animation-duration: 1.6s;
+  }
+</style>

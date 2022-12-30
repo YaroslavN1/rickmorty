@@ -1,10 +1,9 @@
 <template>
-  <section class="h-full">
-    <div class="modals-container" />
-
+  <section class="h-full modals-container relative">
     <div class="mx-auto">
       <div
         v-if="storeCharacters.charactersLoading"
+        class="text-gray-200 text-2xl max-w-full flex justify-center items-center"
       >
         Characters loading...
       </div>
@@ -46,12 +45,4 @@
  const storeCharacters = useStoreCharacters()
 
 </script>
-
-<style scoped>
-
-.modals-container {
-  position: relative;
-}
-
-</style>
 

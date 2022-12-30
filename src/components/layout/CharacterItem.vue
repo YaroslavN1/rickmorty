@@ -106,8 +106,8 @@
   modals
 */
 
-const modals = reactive({
-  characterItem: false
-})
+  const modals = reactive({
+    characterItem: false
+  })
 
 </script>
