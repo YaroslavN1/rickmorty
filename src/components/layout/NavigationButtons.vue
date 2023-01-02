@@ -9,9 +9,9 @@
     </button>
 
     <button
-      :disabled="storeCharacters.requestFilters.page === 1"
+      :disabled="storeCharacters.requestFilters.page <= 1"
       class="px-4 ml-5 drop-shadow-sm bg-white disabled:pointer-events-none disabled:text-slate-200 focus:outline-none border hover:border-green-300 rounded"
-      @click="storeCharacters.previousPage"
+      @click="storeCharacters.movePage(-1)"
     >
       &lt;
     </button>
@@ -20,23 +20,21 @@
       id="pageNumber"
       v-model="storeCharacters.requestFilters.page"
       type="number"
-      min="1"
-      max="42"
       class="w-14 mx-1 text-gray-700 rounded border border-gray-100 drop-shadow-sm bg-white focus:border-green-300 text-center outline-none transition-colors duration-200 ease-in-out"
       @focusout="storeCharacters.getCharacters"
       @keyup.enter="storeCharacters.getCharacters"
     >
 
     <button
-      :disabled="storeCharacters.requestFilters.page === storeCharacters.lastPage || storeCharacters.characterItems.length < 20"
+      :disabled="storeCharacters.requestFilters.page >= storeCharacters.lastPage"
       class="px-4 border drop-shadow-sm bg-white disabled:pointer-events-none disabled:text-slate-200 focus:outline-none hover:border hover:border-green-300 rounded"
-      @click="storeCharacters.nextPage"
+      @click="storeCharacters.movePage(1)"
     >
       &gt;
     </button>
 
     <button
-      :disabled="storeCharacters.requestFilters.page === storeCharacters.lastPage"
+      :disabled="storeCharacters.requestFilters.page >= storeCharacters.lastPage"
       class="px-4 ml-5 rounded drop-shadow-sm bg-white disabled:pointer-events-none disabled:text-slate-200 focus:outline-none border hover:border-green-300"
       @click="storeCharacters.goToPage(storeCharacters.lastPage)"
     >

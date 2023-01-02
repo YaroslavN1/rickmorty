@@ -14,7 +14,7 @@
       />
       <p
         v-if="Object.keys(storeCharacters.requestFilters).length > 1"
-        class="text-red-500 absolute ml-1"
+        class="text-red-500 absolute"
         style="top: -1px; right: -1px"
       >
         <div class="bg-red-500 w-2 h-2 rounded-2xl" />
@@ -32,7 +32,7 @@
       placeholder="Search by name..."
       type="text"
       class="w-2/5 h-8 mt-6 rounded-2xl border border-gray-300 text-center placeholder:text-gray-300 drop-shadow-sm focus:border-green-300 focus:ring-5 focus:ring-green-200 outline-none transition-colors duration-200 ease-in-out"
-      @input="storeCharacters.searchByName(selectedFilters.name)"
+      @input="setFilter('name', selectedFilters.name)"
     >
     <div
       class="dropdown-wrapper max-w-xl grid grid-cols-2 gap-x-10 gap-y-1 mt-6"
@@ -95,7 +95,7 @@
   imports
 */
 
-  import { ref } from 'vue'
+  import { onBeforeMount, onUpdated, ref } from 'vue'
   import { useStoreCharacters } from '@/stores/storeCharacters'
 
 /* 
@@ -115,23 +115,44 @@
 */
 
   const idRange = () => {
-    let range = []
     const currentPage = storeCharacters.requestFilters.page
-    const charactersLength = storeCharacters.characterItems.length
     const charactersCount = storeCharacters.charactersCount
-    
+    const charactersLength = storeCharacters.characterItems.length
+    const lastPage = storeCharacters.lastPage
+    let idRange = [0, 0]
+
     if(charactersLength === 0) {
-      return range = [0, 0]
-    } else if(currentPage !== storeCharacters.lastPage) {
-      range.push(1 + (currentPage - 1) * charactersLength)
-      range.push(currentPage * charactersLength)
-      return range
+      return idRange
+    } else if(charactersLength > 0 && currentPage < lastPage) {
+      idRange[0] = charactersLength * (currentPage - 1) + 1
+      idRange[1] = charactersLength * currentPage
+      console.log('if', idRange)
+      return idRange
     } else {
-      range.push(charactersCount - (charactersLength - 1))
-      range.push(charactersCount)
-      return range
+      idRange = [(charactersCount - charactersLength), charactersCount]
+      console.log('else', idRange)
+      return idRange
     }
   }
+
+  // const idRange = () => {
+  //   let range = []
+  //   const currentPage = storeCharacters.requestFilters.page
+  //   const charactersLength = storeCharacters.characterItems.length
+  //   const charactersCount = storeCharacters.charactersCount
+    
+  //   if(charactersLength === 0) {
+  //     return range = [0, 0]
+  //   } else if(currentPage !== storeCharacters.lastPage) {
+  //     range.push(1 + (currentPage - 1) * charactersLength)
+  //     range.push(currentPage * charactersLength)
+  //     return range
+  //   } else {
+  //     range.push(charactersCount - (charactersLength - 1))
+  //     range.push(charactersCount)
+  //     return range
+  //   }
+  // }
 /* 
   get filters
 */

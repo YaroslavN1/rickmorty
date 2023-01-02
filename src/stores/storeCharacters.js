@@ -12,7 +12,6 @@ export const useStoreCharacters = defineStore('storeCharacters', {
       },
       filterCategories: [],
       charactersLoading: true,
-      charactersFound: false,
       charactersCount: 0,
       characterItems: [],
       lastPage: 1
@@ -40,44 +39,24 @@ export const useStoreCharacters = defineStore('storeCharacters', {
       }
     },
 
-    async requestCharacters(requestFilters) {
-      const response = await getCharacters(requestFilters)
+    async getCharacters() {
+      const response = await getCharacters(this.requestFilters)
       sessionStorage.setItem('page', this.requestFilters.page)
       if(response.status === 200) {
+        const data = response.data
+        this.charactersCount = data.info.count
+        this.characterItems = data.results
+        this.lastPage = data.info.pages
         this.charactersLoading = false
-        this.charactersFound = true
-        return response
       } else {
         this.charactersLoading = false
-        this.charactersFound = false
         this.charactersCount = 0
         this.lastPage = 1
       }
     },
 
-    async getCharacters() {
-      const response = await this.requestCharacters(this.requestFilters)
-      const data = response.data
-      this.charactersCount = data.info.count
-      this.characterItems = data.results
-      this.lastPage = data.info.pages
-      if(this.requestFilters.page > this.lastPage) {
-        this.requestFilters.page = this.lastPage
-      }
-    },
-
-    searchByName(name) {
-      if(name !== '') {
-        this.requestFilters.name = name
-        this.getCharacters()
-      } else {
-        delete this.requestFilters.name
-        this.getCharacters()
-      }
-    },
-
     async setStoreFilters(filterName, subFilter) {
-      if(subFilter !== 'all') {
+      if(subFilter !== 'all' && subFilter !== '') {
         this.requestFilters.page = 1
         this.requestFilters[filterName] = subFilter
         sessionStorage.setItem(filterName, subFilter)
@@ -91,11 +70,7 @@ export const useStoreCharacters = defineStore('storeCharacters', {
 
     resetStoreFilters() {
       this.requestFilters = { page: 1 }
-      filterCategories.forEach(el => {
-        if(sessionStorage.getItem(el.name)) {
-        sessionStorage.removeItem(el.name)
-        }
-      })
+      sessionStorage.clear()
       this.getCharacters()
     },
 
@@ -105,16 +80,10 @@ export const useStoreCharacters = defineStore('storeCharacters', {
         this.getCharacters()
     },
 
-    nextPage() {
-      if(this.requestFilters.page <= this.lastPage)
-      this.requestFilters.page += 1
-      this.getCharacters()
-    },
-
-    previousPage() {
-      if(this.requestFilters.page >= 1)
-      this.requestFilters.page -= 1
-      this.getCharacters()
-    },
+    movePage(page) {
+      if(this.requestFilters.page + page <= this.lastPage && this.requestFilters.page + page >= 1)
+        this.requestFilters.page += page
+        this.getCharacters()
+    }
   }
 })
