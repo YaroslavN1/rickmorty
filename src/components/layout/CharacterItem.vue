@@ -23,32 +23,8 @@
           :class="{ hidden: !imgLoaded}"
           :src="character.image"
           alt="avatar"
-          @load="onImgLoaded"
+          @load="imgLoaded = true"
         >
-        <!-- <picture
-          :class="{ hidden: imgLoaded}"
-        >
-          <source type="image/webp" srcset="@/images/avatar_placeholder.webp">
-          <source type="image/jpeg" srcset="@/images/avatar_placeholder.jpeg">
-          <img
-            src="@/images/avatar_placeholder.jpeg"
-            alt="avatar"
-          >
-        </picture>
-
-        <picture
-          :class="{ hidden: !imgLoaded}"
-        >
-          <source type="image/webp" srcset="@/images/avatar_placeholder.webp" @load="onImgLoaded">
-          <source type="image/jpeg" srcset="@/images/avatar_placeholder.jpeg" @load="onImgLoaded">
-          <img
-            :src="character.image"
-            alt="avatar"
-            @load="onImgLoaded"
-          >
-        </picture> -->
-
-
       </div>
       <h2 class="character-name text-gray-800 text-xl font-semibold leading-snug">{{ character.name }}</h2>
       <div class="text-sm mb-2">
@@ -98,9 +74,6 @@
 */
 
   const imgLoaded = ref(false)
-  const onImgLoaded = () => {
-    imgLoaded.value = true
-  }
 
 /* 
   modals
