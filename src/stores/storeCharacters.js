@@ -49,6 +49,7 @@ export const useStoreCharacters = defineStore('storeCharacters', {
         this.lastPage = data.info.pages
         this.charactersLoading = false
       } else {
+        this.characterItems = []
         this.charactersLoading = false
         this.charactersCount = 0
         this.lastPage = 1

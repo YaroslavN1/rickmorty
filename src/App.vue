@@ -10,16 +10,7 @@
 
       <NavigationButtons class="mt-6" />
 
-      <Suspense>
-        <CharactersList class="my-10" />
-        <template #fallback>
-          <div
-            class="text-gray-200 text-2xl max-w-full flex justify-center items-center"
-          >
-            Characters loading...
-          </div>
-        </template>
-      </Suspense>
+      <CharactersList class="my-10" />
 
       <NavigationButtons class="mb-6" />
     </main>
@@ -47,7 +38,7 @@
  const storeCharacters = useStoreCharacters()
 
 /* 
-  mounted
+  hydrate store
 */
 
   storeCharacters.init()

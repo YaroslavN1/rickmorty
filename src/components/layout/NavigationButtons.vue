@@ -18,11 +18,11 @@
 
     <input
       id="pageNumber"
-      v-model="storeCharacters.requestFilters.page"
+      :value="storeCharacters.requestFilters.page"
       type="number"
       class="w-14 mx-1 text-gray-700 rounded border border-gray-100 drop-shadow-sm bg-white focus:border-green-300 text-center outline-none transition-colors duration-200 ease-in-out"
-      @focusout="storeCharacters.getCharacters"
-      @keyup.enter="storeCharacters.getCharacters"
+      @focusout="onPageNumberInput"
+      @keyup.enter="onPageNumberInput"
     >
 
     <button
@@ -44,6 +44,7 @@
 </template>
 
 <script setup>
+
 /* 
   imports
 */
@@ -55,6 +56,15 @@
 */
 
   const storeCharacters = useStoreCharacters()
+
+/* 
+  page number input
+*/
+
+  const onPageNumberInput = ({ target: { value }}) => {
+    storeCharacters.requestFilters.page = Math.max(Math.min(Math.round(parseInt(value)), storeCharacters.lastPage), 1)
+    storeCharacters.getCharacters()
+  }
 
 </script>
 
