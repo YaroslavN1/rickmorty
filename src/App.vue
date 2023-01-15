@@ -3,9 +3,11 @@
     id="app"
     class="characters-list text-slate-600"
   >
-    <PageHeader />
+    <header>
+      <PageHeader />
+    </header>
 
-    <main class="max-w-5xl mx-auto mt-4 p-6">
+    <main class="max-w-5xl modals-container relative mx-auto mt-4 p-6">
       <CharacterFilters />
 
       <NavigationButtons class="mt-6" />
@@ -15,7 +17,9 @@
       <NavigationButtons class="mb-6" />
     </main>
 
-    <PageFooter />
+    <footer>
+      <PageFooter />
+    </footer>
   </div>
 </template>
 

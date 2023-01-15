@@ -14,10 +14,10 @@
       />
       <p
         v-if="Object.keys(storeCharacters.requestFilters).length > 1"
-        class="text-red-500 absolute"
+        class="absolute"
         style="top: -1px; right: -1px"
       >
-        <span class="bg-red-500 w-2 h-2 rounded-2xl" />
+        <span class="block bg-red-500 w-2 h-2 rounded-2xl" />
       </p>
     </a>
   </div>
@@ -95,7 +95,7 @@
   imports
 */
 
-  import { onBeforeMount, onUpdated, ref } from 'vue'
+  import { ref } from 'vue'
   import { useStoreCharacters } from '@/stores/storeCharacters'
 
 /* 
@@ -184,8 +184,8 @@
 
 let animateIcon = ref(true)
 
-if(!sessionStorage.getItem('animateIcon')) {
-  sessionStorage.setItem('animateIcon', true)
+if(!sessionStorage.getItem('iconAnimated')) {
+  sessionStorage.setItem('iconAnimated', true)
 } else {
   animateIcon.value = false
 }

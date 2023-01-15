@@ -10,15 +10,15 @@
         href=""
         @click.prevent="closeModal()"
       >
-        <div class="modal-container p-4 sm:p-5 fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-full max-w-xs sm:max-w-3xl flex flex-col sm:flex-row rounded-md border border-gray-200 bg-white drop-shadow-2xl">
+        <div class="modal-container p-3 sm:p-5 fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 max-w-xs w-full sm:max-w-3xl flex flex-col sm:flex-row rounded-md border border-gray-200 bg-white drop-shadow-2xl">
           <img class="object-cover object-center rounded drop-shadow-md" :src="character.image" alt="blog">
 
           <div class="py-2 sm:py-0 sm:pl-8 sm:pr-28">
-            <h2 class="text-3xl sm:text-4xl font-semibold mb-3">{{ character.name }}</h2>
+            <h2 class="text-3xl sm:text-4xl font-semibold mt-2 sm:mt-0 sm:mb-3">{{ character.name }}</h2>
             <div
               v-for="key in characterKeysFiltered"
               :key="key"
-              class="text-md font-semibold"
+              class="text-md"
             >
               <span
                 class="text-green-500 capitalize"

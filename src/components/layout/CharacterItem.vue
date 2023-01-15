@@ -1,6 +1,6 @@
 <template>
   <div
-    class="p-2 border rounded-md drop-shadow-sm border-gray-200 bg-white"
+    class="p-1 sm:p-2 border rounded-md drop-shadow-sm border-gray-200 bg-white"
   >
     <ModalCharacterItem
       v-if="modals.characterItem"

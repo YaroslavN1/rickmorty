@@ -1,5 +1,5 @@
 <template>
-  <section class="h-full modals-container relative">
+  <section class="h-full">
     <div class="mx-auto">
       <div
         v-if="storeCharacters.charactersLoading"
