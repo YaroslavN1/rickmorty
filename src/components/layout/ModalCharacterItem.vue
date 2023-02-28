@@ -95,11 +95,26 @@
   const characterKeys = ref(['status', 'species', 'type', 'gender', 'created', 'origin', 'location'])
 
   const characterKeysFiltered = Object.entries(props.character).filter(el => characterKeys.value.some(key => el[0] === key))
-
   characterKeysFiltered.forEach(i => {
     if(i[0] === 'origin' || i[0] === 'location') {
       i[1] = i[1].name
     }
   })
+
+/*
+  character creation date formatting
+*/
+
+  let characterCreationDate = new Date(characterKeysFiltered.filter(el => el[0] === 'created')[0][1])
+
+  characterCreationDate = new Intl.DateTimeFormat('default', {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric"
+  }).format(characterCreationDate)
+
+  characterKeysFiltered.filter(el => el[0] === 'created')[0][1] = characterCreationDate
 
 </script>
