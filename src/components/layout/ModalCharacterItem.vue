@@ -107,7 +107,7 @@
 
   let characterCreationDate = new Date(characterKeysFiltered.filter(el => el[0] === 'created')[0][1])
 
-  characterCreationDate = new Intl.DateTimeFormat('default', {
+  characterCreationDate = new Intl.DateTimeFormat('en-GB', {
     year: "numeric",
     month: "long",
     day: "numeric",
