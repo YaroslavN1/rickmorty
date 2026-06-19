@@ -11,7 +11,7 @@
     "@vueuse/core": "^9.9.0",
     "bulma": "^0.9.4",
     "pinia": "^2.0.28",
-    "rickmortyapi": "^2.1.1",
+    "rickmortyapi": "github:YaroslavN1/rick-and-morty-api-node#master",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6"
   },
