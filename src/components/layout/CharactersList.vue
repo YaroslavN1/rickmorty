@@ -30,19 +30,8 @@
 </template>
 
 <script setup>
+import CharacterItem from '@/components/layout/CharacterItem.vue'
+import { useStoreCharacters } from '@/stores/storeCharacters'
 
-/* 
-  imports
-*/
-
-  import CharacterItem from '@/components/layout/CharacterItem.vue'
-  import { useStoreCharacters } from '@/stores/storeCharacters'
-
-/* 
-  stores
-*/
-
- const storeCharacters = useStoreCharacters()
-
+const storeCharacters = useStoreCharacters()
 </script>
-

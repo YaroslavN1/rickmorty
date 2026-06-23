@@ -91,106 +91,58 @@
 </template>
 
 <script setup>
-/* 
-  imports
-*/
+import { ref } from 'vue'
+import { useStoreCharacters } from '@/stores/storeCharacters'
 
-  import { ref } from 'vue'
-  import { useStoreCharacters } from '@/stores/storeCharacters'
+const storeCharacters = useStoreCharacters()
 
-/* 
-  stores
-*/
+const idRange = () => {
+  const currentPage = storeCharacters.requestFilters.page
+  const charactersCount = storeCharacters.charactersCount
+  const charactersLength = storeCharacters.characterItems.length
 
-  const storeCharacters = useStoreCharacters()
-
-/*
-  open close filters
-*/
-
-  const openCloseFilters = ref(true)
-
-/* 
-  characters id range
-*/
-
-  const idRange = () => {
-    const currentPage = storeCharacters.requestFilters.page
-    const charactersCount = storeCharacters.charactersCount
-    const charactersLength = storeCharacters.characterItems.length
-
-    if(charactersLength === 0) {
-      return [0, 0]
-    }
-
-    return [
-      ((currentPage - 1) * 20) + 1,
-      currentPage * 20 > charactersCount ? charactersCount : currentPage * 20,
-    ]
+  if(charactersLength === 0) {
+    return [0, 0]
   }
 
-/* 
-  get filters
-*/
+  return [
+    ((currentPage - 1) * 20) + 1,
+    currentPage * 20 > charactersCount ? charactersCount : currentPage * 20,
+  ]
+}
 
-  const filterCategories = storeCharacters.filterCategories
-
-/* 
-  selected filters default
-*/
-
-  const selectedFilters = ref({
-    name: '',
-    status: 'all',
-    species: 'all',
-    type: 'all',
-    gender: 'all'
-  })
-
-/* 
-  update selected filters from session storage
-*/
-
-  Object.keys(selectedFilters.value).forEach(el => {
-        if(storeCharacters.requestFilters[el]) {
-          selectedFilters.value[el] = storeCharacters.requestFilters[el]
-        }
-      })
-  
-/* 
-  reset filters
-*/
-  const resetFilters = () => {
-    selectedFilters.value.name = ''
-    selectedFilters.value.status = 'all'
-    selectedFilters.value.species = 'all'
-    selectedFilters.value.type = 'all'
-    selectedFilters.value.gender = 'all'
-    storeCharacters.resetStoreFilters()
+const openCloseFilters = ref(true)
+const filterCategories = storeCharacters.filterCategories
+const selectedFilters = ref({
+  name: '',
+  status: 'all',
+  species: 'all',
+  type: 'all',
+  gender: 'all'
+})
+Object.keys(selectedFilters.value).forEach(el => {
+  if(storeCharacters.requestFilters[el]) {
+    selectedFilters.value[el] = storeCharacters.requestFilters[el]
   }
-
-
-/* 
-  call filters request method in store
-*/
-
-  const setFilter = (filterName, subFilter) => {
-    storeCharacters.setStoreFilters(filterName, subFilter)
-  }
-
-/*
-  filters icon animation handling
-*/
+})
+const setFilter = (filterName, subFilter) => {
+  storeCharacters.setStoreFilters(filterName, subFilter)
+}
+const resetFilters = () => {
+  selectedFilters.value.name = ''
+  selectedFilters.value.status = 'all'
+  selectedFilters.value.species = 'all'
+  selectedFilters.value.type = 'all'
+  selectedFilters.value.gender = 'all'
+  storeCharacters.resetStoreFilters()
+}
 
 let animateIcon = ref(true)
-
 if(!sessionStorage.getItem('iconAnimated')) {
   sessionStorage.setItem('iconAnimated', true)
 } else {
   animateIcon.value = false
 }
-
-
 </script>
 
 <style scoped>

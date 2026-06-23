@@ -43,78 +43,44 @@
 </template>
 
 <script setup>
+import { ref } from 'vue'
+import { onClickOutside } from '@vueuse/core'
 
-/* 
-  imports
-*/
-
-  import { ref } from 'vue'
-  import { onClickOutside } from '@vueuse/core'
-
-/* 
-  props
-*/
-
-  const props = defineProps({
-    character: {
-      type: Object,
-      required: true
-    },
-    characterModal: {
-      type: Boolean,
-      default: false
-    }
-  })
-/* 
-  emits
-*/
-
-  const emit = defineEmits(['update:characterModal'])
-
-/* 
-  close character card
-*/
-
-  const closeModal = () => {
-    emit('update:characterModal', false)
+const props = defineProps({
+  character: {
+    type: Object,
+    required: true
+  },
+  characterModal: {
+    type: Boolean,
+    default: false
   }
+})
 
+const emit = defineEmits(['update:characterModal'])
 
-/* 
-  close on click outside
-*/
+const closeModal = () => {
+  emit('update:characterModal', false)
+}
+const characterModalRef = ref(null)
+onClickOutside(characterModalRef, () => closeModal())
 
-  const characterModalRef = ref(null)
+const characterKeys = ref(['status', 'species', 'type', 'gender', 'created', 'origin', 'location'])
+const characterKeysFiltered = Object.entries(props.character).filter(el => characterKeys.value.some(key => el[0] === key))
+characterKeysFiltered.forEach(i => {
+  if(i[0] === 'origin' || i[0] === 'location') {
+    i[1] = i[1].name
+  }
+})
 
-  onClickOutside(characterModalRef, () => closeModal())
+let characterCreationDate = new Date(characterKeysFiltered.filter(el => el[0] === 'created')[0][1])
+characterCreationDate = new Intl.DateTimeFormat('en-GB', {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+  hour: "numeric",
+  minute: "numeric"
+}).format(characterCreationDate)
 
-/* 
-  character prop destructure
-*/
-
-  const characterKeys = ref(['status', 'species', 'type', 'gender', 'created', 'origin', 'location'])
-
-  const characterKeysFiltered = Object.entries(props.character).filter(el => characterKeys.value.some(key => el[0] === key))
-  characterKeysFiltered.forEach(i => {
-    if(i[0] === 'origin' || i[0] === 'location') {
-      i[1] = i[1].name
-    }
-  })
-
-/*
-  character creation date formatting
-*/
-
-  let characterCreationDate = new Date(characterKeysFiltered.filter(el => el[0] === 'created')[0][1])
-
-  characterCreationDate = new Intl.DateTimeFormat('en-GB', {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    hour: "numeric",
-    minute: "numeric"
-  }).format(characterCreationDate)
-
-  characterKeysFiltered.filter(el => el[0] === 'created')[0][1] = characterCreationDate
-
+characterKeysFiltered.filter(el => el[0] === 'created')[0][1] = characterCreationDate
 </script>
