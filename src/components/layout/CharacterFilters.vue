@@ -1,41 +1,39 @@
 <template>
-  <div
-    class="flex place-content-center"
-  >
+  <div class="flex place-content-center">
     <a
       href=""
-      class="text-xl flex relative"
+      class="relative flex text-xl"
       :class="{ 'filters-icon-anim': animateIcon }"
       @click.prevent="openCloseFilters = !openCloseFilters"
     >
       <i
-        class="fa-solid fa-filter hover:text-green-200 transition-colors duration-100 ease-in-out"
-        :class="[ openCloseFilters ? 'text-green-300' : 'text-gray-300']"
+        class="fa-solid fa-filter transition-colors duration-100 ease-in-out hover:text-green-200"
+        :class="[openCloseFilters ? 'text-green-300' : 'text-gray-300']"
       />
       <p
         v-if="Object.keys(storeCharacters.requestFilters).length > 1"
         class="absolute"
         style="top: -1px; right: -1px"
       >
-        <span class="block bg-red-500 w-2 h-2 rounded-2xl" />
+        <span class="block h-2 w-2 rounded-2xl bg-red-500" />
       </p>
     </a>
   </div>
 
   <div
     class="filters-wrapper flex flex-col items-center transition-all duration-300 ease-in-out"
-    :class="{ 'h-0': openCloseFilters, 'overflow-hidden': openCloseFilters}"
+    :class="{ 'h-0': openCloseFilters, 'overflow-hidden': openCloseFilters }"
   >
     <input
       id="characterName"
       v-model="selectedFilters.name"
       placeholder="Search by name..."
       type="text"
-      class="w-2/5 min-w-max h-8 mt-6 rounded-2xl border border-gray-300 text-center placeholder:text-gray-300 drop-shadow-sm focus:border-green-300 focus:ring-5 focus:ring-green-200 outline-none transition-colors duration-200 ease-in-out"
+      class="focus:ring-5 mt-6 h-8 w-2/5 min-w-max rounded-2xl border border-gray-300 text-center outline-none drop-shadow-sm transition-colors duration-200 ease-in-out placeholder:text-gray-300 focus:border-green-300 focus:ring-green-200"
       @input="setFilter('name', selectedFilters.name)"
-    >
+    />
     <div
-      class="dropdown-wrapper max-w-xl grid grid-cols-2 gap-x-10 gap-y-1 mt-6"
+      class="dropdown-wrapper mt-6 grid max-w-xl grid-cols-2 gap-x-10 gap-y-1"
     >
       <label
         v-for="filter in filterCategories"
@@ -43,19 +41,15 @@
         for="dropdown"
         class="flex"
       >
-        <span class="capitalize text-green-500 mr-2">
-          {{ filter.name }}:
-        </span>
+        <span class="mr-2 capitalize text-green-500"> {{ filter.name }}: </span>
         <select
           id="filters"
           v-model="selectedFilters[filter.name]"
-          class="capitalize outline-0 w-full text-center text-ellipsis"
+          class="w-full text-ellipsis text-center capitalize outline-0"
           name="filters"
           @change="setFilter(filter.name, selectedFilters[filter.name])"
         >
-          <option selected value="all">
-            -
-          </option>
+          <option selected value="all">-</option>
           <option
             v-for="subFilter in filter.subFilters"
             :key="subFilter"
@@ -70,21 +64,17 @@
     <a
       v-if="Object.keys(storeCharacters.requestFilters).length > 1"
       href=""
-      class="mt-4 underline text-red-400 hover:text-red-300 transition-colors duration-100 ease-in-out"
+      class="mt-4 text-red-400 underline transition-colors duration-100 ease-in-out hover:text-red-300"
       @click.prevent="resetFilters"
     >
       clear filters
     </a>
   </div>
 
-  <div
-    class="mt-6 flex place-content-center"
-  >
-    <p class="ml-1">
-      {{ idRange()[0] }} - {{ idRange()[1] }}
-    </p>
+  <div class="mt-6 flex place-content-center">
+    <p class="ml-1">{{ idRange()[0] }} - {{ idRange()[1] }}</p>
     <p class="ml-2">of</p>
-    <p class="text-green-400 ml-2">
+    <p class="ml-2 text-green-400">
       {{ storeCharacters.charactersCount }}
     </p>
   </div>
@@ -101,12 +91,12 @@ const idRange = () => {
   const charactersCount = storeCharacters.charactersCount
   const charactersLength = storeCharacters.characterItems.length
 
-  if(charactersLength === 0) {
+  if (charactersLength === 0) {
     return [0, 0]
   }
 
   return [
-    ((currentPage - 1) * 20) + 1,
+    (currentPage - 1) * 20 + 1,
     currentPage * 20 > charactersCount ? charactersCount : currentPage * 20,
   ]
 }
@@ -118,10 +108,10 @@ const selectedFilters = ref({
   status: 'all',
   species: 'all',
   type: 'all',
-  gender: 'all'
+  gender: 'all',
 })
-Object.keys(selectedFilters.value).forEach(el => {
-  if(storeCharacters.requestFilters[el]) {
+Object.keys(selectedFilters.value).forEach((el) => {
+  if (storeCharacters.requestFilters[el]) {
     selectedFilters.value[el] = storeCharacters.requestFilters[el]
   }
 })
@@ -138,7 +128,7 @@ const resetFilters = () => {
 }
 
 let animateIcon = ref(true)
-if(!sessionStorage.getItem('iconAnimated')) {
+if (!sessionStorage.getItem('iconAnimated')) {
   sessionStorage.setItem('iconAnimated', true)
 } else {
   animateIcon.value = false
@@ -146,11 +136,11 @@ if(!sessionStorage.getItem('iconAnimated')) {
 </script>
 
 <style scoped>
-  .filters-icon-anim {
-    animation: flash;
-    animation-duration: 1.6s;
-  }
-  /* select {
+.filters-icon-anim {
+  animation: flash;
+  animation-duration: 1.6s;
+}
+/* select {
     -webkit-appearance:caret;
   } */
 </style>
