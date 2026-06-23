@@ -20,7 +20,7 @@ Personal Vue 3 project for browsing characters from the [Rick and Morty API](htt
 
 ## Prerequisites
 
-- Node `18.20.4` (defined in [`.nvmrc`](./.nvmrc))
+- Node `22.22.2` (defined in [`.nvmrc`](./.nvmrc))
 - [pnpm](https://pnpm.io/)
 
 ## Getting started
