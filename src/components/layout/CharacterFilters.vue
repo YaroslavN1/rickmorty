@@ -21,7 +21,7 @@
   </div>
 
   <div
-    class="filters-wrapper flex flex-col items-center transition-all duration-300 ease-in-out"
+    class="flex flex-col items-center transition-all duration-300 ease-in-out"
     :class="{ 'h-0': openCloseFilters, 'overflow-hidden': openCloseFilters }"
   >
     <input
@@ -32,9 +32,7 @@
       class="focus:ring-5 mt-6 h-8 w-2/5 min-w-max rounded-2xl border border-gray-300 text-center outline-none drop-shadow-sm transition-colors duration-200 ease-in-out placeholder:text-gray-300 focus:border-green-300 focus:ring-green-200"
       @input="setFilter('name', selectedFilters.name)"
     />
-    <div
-      class="dropdown-wrapper mt-6 grid max-w-xl grid-cols-2 gap-x-10 gap-y-1"
-    >
+    <div class="mt-6 grid max-w-xl grid-cols-2 gap-x-10 gap-y-1">
       <label
         v-for="filter in filterCategories"
         :key="filter.id"

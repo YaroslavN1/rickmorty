@@ -21,9 +21,7 @@
           @load="imgLoaded = true"
         />
       </div>
-      <h2
-        class="character-name text-xl font-semibold leading-snug text-gray-800"
-      >
+      <h2 class="text-xl font-semibold leading-snug text-gray-800">
         {{ character.name }}
       </h2>
       <div class="mb-2 text-sm">

@@ -1,5 +1,5 @@
 <template>
-  <div class="buttons-wrapper flex h-8 justify-center">
+  <div class="flex h-8 justify-center">
     <button
       :disabled="storeCharacters.requestFilters.page === 1"
       class="rounded border bg-white px-4 drop-shadow-sm transition-colors duration-100 ease-in-out hover:border-green-300 focus:outline-none disabled:pointer-events-none disabled:text-slate-200"

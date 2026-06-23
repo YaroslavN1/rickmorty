@@ -1,11 +1,11 @@
 <template>
   <teleport to=".modals-container">
     <section
-      class="modal-background absolute left-0 top-0 z-10 flex h-full w-full items-center justify-center bg-white bg-opacity-95 p-3 text-gray-600"
+      class="absolute left-0 top-0 z-10 flex h-full w-full items-center justify-center bg-white bg-opacity-95 p-3 text-gray-600"
     >
       <a ref="characterModalRef" href="" @click.prevent="closeModal()">
         <div
-          class="modal-container fixed left-1/2 top-1/2 flex w-full max-w-xs -translate-x-1/2 -translate-y-1/2 flex-col rounded-md border border-gray-200 bg-white p-3 drop-shadow-2xl sm:max-w-3xl sm:flex-row sm:p-5"
+          class="fixed left-1/2 top-1/2 flex w-full max-w-xs -translate-x-1/2 -translate-y-1/2 flex-col rounded-md border border-gray-200 bg-white p-3 drop-shadow-2xl sm:max-w-3xl sm:flex-row sm:p-5"
         >
           <img
             class="rounded object-cover object-center drop-shadow-md"
