@@ -4,48 +4,47 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-dependencies:
-  '@vueuse/core':
-    specifier: ^9.9.0
-    version: 9.9.0(vue@3.2.45)
-  bulma:
-    specifier: ^0.9.4
-    version: 0.9.4
-  pinia:
-    specifier: ^2.0.28
-    version: 2.0.28(vue@3.2.45)
-  rickmortyapi:
-    specifier: github:YaroslavN1/rick-and-morty-api-node#master
-    version: github.com/YaroslavN1/rick-and-morty-api-node/3c596bb130372818b08c67ea74ea9d96272533e5
-  vue:
-    specifier: ^3.2.45
-    version: 3.2.45
-  vue-router:
-    specifier: ^4.1.6
-    version: 4.1.6(vue@3.2.45)
+importers:
 
-devDependencies:
-  '@vitejs/plugin-vue':
-    specifier: ^3.2.0
-    version: 3.2.0(vite@3.2.5)(vue@3.2.45)
-  autoprefixer:
-    specifier: ^10.4.13
-    version: 10.4.13(postcss@8.4.19)
-  eslint:
-    specifier: ^8.29.0
-    version: 8.29.0
-  eslint-plugin-vue:
-    specifier: ^9.8.0
-    version: 9.8.0(eslint@8.29.0)
-  postcss:
-    specifier: 8.4.19
-    version: 8.4.19
-  tailwindcss:
-    specifier: ^3.2.4
-    version: 3.2.4(postcss@8.4.19)
-  vite:
-    specifier: ^3.2.4
-    version: 3.2.5
+  .:
+    dependencies:
+      '@vueuse/core':
+        specifier: ^9.9.0
+        version: 9.9.0(vue@3.2.45)
+      bulma:
+        specifier: ^0.9.4
+        version: 0.9.4
+      pinia:
+        specifier: ^2.0.28
+        version: 2.0.28(vue@3.2.45)
+      rickmortyapi:
+        specifier: github:YaroslavN1/rick-and-morty-api-node#master
+        version: github.com/YaroslavN1/rick-and-morty-api-node/3c596bb130372818b08c67ea74ea9d96272533e5
+      vue:
+        specifier: ^3.2.45
+        version: 3.2.45
+    devDependencies:
+      '@vitejs/plugin-vue':
+        specifier: ^3.2.0
+        version: 3.2.0(vite@3.2.5)(vue@3.2.45)
+      autoprefixer:
+        specifier: ^10.4.13
+        version: 10.4.13(postcss@8.4.19)
+      eslint:
+        specifier: ^8.29.0
+        version: 8.29.0
+      eslint-plugin-vue:
+        specifier: ^9.8.0
+        version: 9.8.0(eslint@8.29.0)
+      postcss:
+        specifier: 8.4.19
+        version: 8.4.19
+      tailwindcss:
+        specifier: ^3.2.4
+        version: 3.2.4(postcss@8.4.19)
+      vite:
+        specifier: ^3.2.4
+        version: 3.2.5
 
 packages:
 
@@ -1618,15 +1617,6 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
-
-  /vue-router@4.1.6(vue@3.2.45):
-    resolution: {integrity: sha512-DYWYwsG6xNPmLq/FmZn8Ip+qrhFEzA14EI12MsMgVxvHFDYvlr4NXpVF5hrRH1wVcDP8fGi5F4rxuJSl8/r+EQ==}
-    peerDependencies:
-      vue: ^3.2.0
-    dependencies:
-      '@vue/devtools-api': 6.4.5
-      vue: 3.2.45
-    dev: false
 
   /vue@3.2.45:
     resolution: {integrity: sha512-9Nx/Mg2b2xWlXykmCwiTUCWHbWIj53bnkizBxKai1g61f2Xit700A1ljowpTIM11e3uipOeiPcSqnmBg6gyiaA==}
