@@ -42,45 +42,27 @@
 </template>
 
 <script setup>
+import { ref, reactive } from 'vue'
+import ModalCharacterItem from '@/components/layout/ModalCharacterItem.vue'
 
-/* 
-  imports
-*/
+const props = defineProps({
+  character: {
+    type: Object,
+    required: true
+  },
+  filter: {
+    type: String,
+    default: '.'
+  },
+  subFilter: {
+    type: String,
+    default: ''
+  }
+})
 
-  import { ref, reactive } from 'vue'
-  import ModalCharacterItem from '@/components/layout/ModalCharacterItem.vue'
+const imgLoaded = ref(false)
 
-/*
-  props
-*/
-
-  const props = defineProps({
-    character: {
-      type: Object,
-      required: true
-    },
-    filter: {
-      type: String,
-      default: '.'
-    },
-    subFilter: {
-      type: String,
-      default: ''
-    }
-  })
-
-/* 
-  image loaded
-*/
-
-  const imgLoaded = ref(false)
-
-/* 
-  modals
-*/
-
-  const modals = reactive({
-    characterItem: false
-  })
-
+const modals = reactive({
+  characterItem: false
+})
 </script>

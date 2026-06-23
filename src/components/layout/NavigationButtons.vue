@@ -44,28 +44,14 @@
 </template>
 
 <script setup>
+import { useStoreCharacters } from '@/stores/storeCharacters'
 
-/* 
-  imports
-*/
+const storeCharacters = useStoreCharacters()
 
-  import { useStoreCharacters } from '@/stores/storeCharacters'
-
-/* 
-  stores
-*/
-
-  const storeCharacters = useStoreCharacters()
-
-/* 
-  page number input
-*/
-
-  const onPageNumberInput = ({ target: { value }}) => {
-    storeCharacters.requestFilters.page = Math.max(Math.min(Math.round(parseInt(value)), storeCharacters.lastPage), 1)
-    storeCharacters.getCharacters()
-  }
-
+const onPageNumberInput = ({ target: { value }}) => {
+  storeCharacters.requestFilters.page = Math.max(Math.min(Math.round(parseInt(value)), storeCharacters.lastPage), 1)
+  storeCharacters.getCharacters()
+}
 </script>
 
 <style scoped>
