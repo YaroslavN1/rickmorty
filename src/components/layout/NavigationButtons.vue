@@ -15,7 +15,7 @@
     <input
       id="pageNumber"
       ref="pageInputRef"
-      :value="storeCharacters.requestFilters.page"
+      :value="requestFilters.page"
       type="number"
       class="mx-1 w-14 rounded border border-gray-100 text-center outline-none drop-shadow-sm focus:border-green-300"
       @focusout="(el) => goToPage(el.target.value)"
@@ -29,7 +29,7 @@
     <NavigationButton
       class="ml-5"
       :disabled="isLastPage"
-      @click="goToPage(storeCharacters.lastPage)"
+      @click="goToPage(lastPage)"
     >
       Last
     </NavigationButton>
@@ -39,35 +39,35 @@
 <script setup>
 import NavigationButton from './NavigationButton.vue'
 import { useStoreCharacters } from '@/stores/storeCharacters'
+import { storeToRefs } from 'pinia'
 import { computed, ref } from 'vue'
 
 const storeCharacters = useStoreCharacters()
+const { requestFilters, lastPage } = storeToRefs(storeCharacters)
+
 const pageInputRef = ref(null)
 
-const isFirstPage = computed(() => storeCharacters.requestFilters.page === 1)
-const isLastPage = computed(
-  () => storeCharacters.requestFilters.page === storeCharacters.lastPage,
-)
+const isFirstPage = computed(() => requestFilters.value.page === 1)
+const isLastPage = computed(() => requestFilters.value.page === lastPage.value)
 
-const clampPage = (page) =>
-  Math.max(Math.min(page, storeCharacters.lastPage), 1)
+const clampPage = (page) => Math.max(Math.min(page, lastPage.value), 1)
 
 const goToPage = (page) => {
   const parsedPage = parseInt(page)
   const isValidPage = !Number.isNaN(parsedPage)
   const clampedPage = clampPage(parsedPage)
-  const isCurrentPage = clampedPage === storeCharacters.requestFilters.page
+  const isCurrentPage = clampedPage === requestFilters.value.page
 
   if (isValidPage && !isCurrentPage) {
-    storeCharacters.requestFilters.page = clampedPage
+    requestFilters.value.page = clampedPage
     storeCharacters.getCharacters()
   }
 
-  pageInputRef.value.value = storeCharacters.requestFilters.page
+  pageInputRef.value.value = requestFilters.value.page
 }
 
 const movePage = (pageOffset) => {
-  goToPage(storeCharacters.requestFilters.page + pageOffset)
+  goToPage(requestFilters.value.page + pageOffset)
 }
 </script>
 
