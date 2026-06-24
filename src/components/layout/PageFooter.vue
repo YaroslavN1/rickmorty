@@ -7,18 +7,9 @@
         <source
           class="object-cover"
           type="image/webp"
-          srcset="@/images/rickandmorty_logo_black.webp"
+          :srcset="logoWebpBlack"
         />
-        <source
-          class="object-cover"
-          type="image/png"
-          srcset="@/images/rickandmorty_logo_black.png"
-        />
-        <img
-          src="@/images/rickandmorty_logo_black.png"
-          class="object-cover"
-          alt="avatar"
-        />
+        <img :src="logoPngBlack" class="object-cover" alt="avatar" />
       </picture>
       <span
         class="mt-4 inline-flex justify-center sm:ml-auto sm:mt-0 sm:justify-start"
@@ -37,3 +28,8 @@
     </div>
   </footer>
 </template>
+
+<script setup>
+import logoWebpBlack from '@/images/rickandmorty_logo_black.webp'
+import logoPngBlack from '@/images/rickandmorty_logo_black.png'
+</script>
