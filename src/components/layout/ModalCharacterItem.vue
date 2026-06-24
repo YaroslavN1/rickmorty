@@ -18,13 +18,19 @@
               {{ character.name }}
             </h2>
             <div
-              v-for="key in characterKeysFiltered"
+              v-for="[key, value] in characterKeysFiltered"
               :key="key"
               class="text-md"
             >
-              <span class="capitalize text-green-500"> {{ key[0] }}: </span>
-              <span>
-                {{ key[1] === '' ? '-' : key[1] }}
+              <span class="capitalize text-green-500"> {{ key }}: </span>
+              <span v-if="['origin', 'location'].includes(key)">
+                {{ value.name || '-' }}
+              </span>
+              <span v-else-if="key === 'created'">
+                {{ formatDate(value) }}
+              </span>
+              <span v-else>
+                {{ value === '' ? '-' : value }}
               </span>
             </div>
           </div>
@@ -63,7 +69,7 @@ const closeModal = () => {
 const characterModalRef = ref(null)
 onClickOutside(characterModalRef, () => closeModal())
 
-const characterKeys = ref([
+const displayedCharacterKeys = [
   'status',
   'species',
   'type',
@@ -71,27 +77,18 @@ const characterKeys = ref([
   'created',
   'origin',
   'location',
-])
-const characterKeysFiltered = Object.entries(props.character).filter((el) =>
-  characterKeys.value.some((key) => el[0] === key),
-)
-characterKeysFiltered.forEach((i) => {
-  if (i[0] === 'origin' || i[0] === 'location') {
-    i[1] = i[1].name
-  }
-})
+]
 
-let characterCreationDate = new Date(
-  characterKeysFiltered.filter((el) => el[0] === 'created')[0][1],
+const characterKeysFiltered = Object.entries(props.character).filter(
+  ([key, _]) => displayedCharacterKeys.includes(key),
 )
-characterCreationDate = new Intl.DateTimeFormat('en-GB', {
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric',
-  hour: 'numeric',
-  minute: 'numeric',
-}).format(characterCreationDate)
 
-characterKeysFiltered.filter((el) => el[0] === 'created')[0][1] =
-  characterCreationDate
+const formatDate = (date) =>
+  new Intl.DateTimeFormat('en-GB', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+  }).format(new Date(date))
 </script>
