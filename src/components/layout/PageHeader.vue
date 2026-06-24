@@ -1,11 +1,9 @@
 <template>
-  <header class="body-font bg-green-400 bg-opacity-95 text-white">
-    <div class="container mx-auto flex flex-col items-center p-3">
-      <picture class="w-64">
-        <source class="object-cover" type="image/webp" :srcset="logoWebp" />
-        <img :src="logoPng" class="object-cover" alt="avatar" />
-      </picture>
-    </div>
+  <header class="flex flex-col items-center bg-green-400 py-3">
+    <picture class="w-64">
+      <source type="image/webp" :srcset="logoWebp" />
+      <img :src="logoPng" class="object-cover" alt="avatar" />
+    </picture>
   </header>
 </template>
 

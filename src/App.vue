@@ -1,8 +1,6 @@
 <template>
-  <div id="app" class="text-slate-600">
-    <header>
-      <PageHeader />
-    </header>
+  <div id="app">
+    <PageHeader />
 
     <main class="modals-container relative mx-auto mt-4 max-w-5xl p-6">
       <CharacterFilters />
@@ -14,9 +12,7 @@
       <NavigationButtons class="mb-6" />
     </main>
 
-    <footer>
-      <PageFooter />
-    </footer>
+    <PageFooter />
   </div>
 </template>
 
