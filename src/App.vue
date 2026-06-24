@@ -20,7 +20,7 @@
 import PageHeader from '@/components/layout/PageHeader.vue'
 import PageFooter from '@/components/layout/PageFooter.vue'
 import CharacterFilters from '@/components/layout/CharacterFilters.vue'
-import NavigationButtons from '@/components/layout/NavigationButtons.vue'
+import NavigationButtons from '@/components/navigation/NavigationButtons.vue'
 import CharactersList from '@/components/layout/CharactersList.vue'
 import { useStoreCharacters } from '@/stores/storeCharacters'
 

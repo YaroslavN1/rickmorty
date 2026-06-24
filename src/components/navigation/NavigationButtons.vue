@@ -1,16 +1,12 @@
 <template>
   <div class="flex h-8 justify-center">
-    <NavigationButton :disabled="isFirstPage" @click="goToPage(1)">
+    <BaseButton :disabled="isFirstPage" @click="goToPage(1)">
       First
-    </NavigationButton>
+    </BaseButton>
 
-    <NavigationButton
-      class="ml-5"
-      :disabled="isFirstPage"
-      @click="movePage(-1)"
-    >
+    <BaseButton class="ml-5" :disabled="isFirstPage" @click="movePage(-1)">
       &lt;
-    </NavigationButton>
+    </BaseButton>
 
     <input
       id="pageNumber"
@@ -22,22 +18,16 @@
       @keyup.enter="(el) => goToPage(el.target.value)"
     />
 
-    <NavigationButton :disabled="isLastPage" @click="movePage(1)">
-      &gt;
-    </NavigationButton>
+    <BaseButton :disabled="isLastPage" @click="movePage(1)"> &gt; </BaseButton>
 
-    <NavigationButton
-      class="ml-5"
-      :disabled="isLastPage"
-      @click="goToPage(lastPage)"
-    >
+    <BaseButton class="ml-5" :disabled="isLastPage" @click="goToPage(lastPage)">
       Last
-    </NavigationButton>
+    </BaseButton>
   </div>
 </template>
 
 <script setup>
-import NavigationButton from './NavigationButton.vue'
+import BaseButton from '@/components/common/BaseButton.vue'
 import { useStoreCharacters } from '@/stores/storeCharacters'
 import { storeToRefs } from 'pinia'
 import { computed, ref } from 'vue'
