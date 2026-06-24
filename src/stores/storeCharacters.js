@@ -72,19 +72,5 @@ export const useStoreCharacters = defineStore('storeCharacters', {
       sessionStorage.clear()
       this.getCharacters()
     },
-
-    goToPage(page) {
-      if (page > 0 && page <= this.lastPage) this.requestFilters.page = page
-      this.getCharacters()
-    },
-
-    movePage(page) {
-      if (
-        this.requestFilters.page + page <= this.lastPage &&
-        this.requestFilters.page + page >= 1
-      )
-        this.requestFilters.page += page
-      this.getCharacters()
-    },
   },
 })
