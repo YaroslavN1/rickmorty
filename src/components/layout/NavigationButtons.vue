@@ -1,40 +1,35 @@
 <template>
   <div class="flex h-8 justify-center">
-    <NavigationButton
-      :disabled="isFirstPage"
-      @click="storeCharacters.goToPage(1)"
-    >
+    <NavigationButton :disabled="isFirstPage" @click="goToPage(1)">
       First
     </NavigationButton>
 
     <NavigationButton
       class="ml-5"
       :disabled="isFirstPage"
-      @click="storeCharacters.movePage(-1)"
+      @click="movePage(-1)"
     >
       &lt;
     </NavigationButton>
 
     <input
       id="pageNumber"
+      ref="pageInputRef"
       :value="storeCharacters.requestFilters.page"
       type="number"
       class="mx-1 w-14 rounded border border-gray-100 text-center outline-none drop-shadow-sm focus:border-green-300"
-      @focusout="onPageNumberInput"
-      @keyup.enter="onPageNumberInput"
+      @focusout="(el) => goToPage(el.target.value)"
+      @keyup.enter="(el) => goToPage(el.target.value)"
     />
 
-    <NavigationButton
-      :disabled="isLastPage"
-      @click="storeCharacters.movePage(1)"
-    >
+    <NavigationButton :disabled="isLastPage" @click="movePage(1)">
       &gt;
     </NavigationButton>
 
     <NavigationButton
       class="ml-5"
       :disabled="isLastPage"
-      @click="storeCharacters.goToPage(storeCharacters.lastPage)"
+      @click="goToPage(storeCharacters.lastPage)"
     >
       Last
     </NavigationButton>
@@ -44,21 +39,35 @@
 <script setup>
 import NavigationButton from './NavigationButton.vue'
 import { useStoreCharacters } from '@/stores/storeCharacters'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
 const storeCharacters = useStoreCharacters()
+const pageInputRef = ref(null)
 
 const isFirstPage = computed(() => storeCharacters.requestFilters.page === 1)
 const isLastPage = computed(
   () => storeCharacters.requestFilters.page === storeCharacters.lastPage,
 )
 
-const onPageNumberInput = ({ target: { value } }) => {
-  storeCharacters.requestFilters.page = Math.max(
-    Math.min(Math.round(parseInt(value)), storeCharacters.lastPage),
-    1,
-  )
-  storeCharacters.getCharacters()
+const clampPage = (page) =>
+  Math.max(Math.min(page, storeCharacters.lastPage), 1)
+
+const goToPage = (page) => {
+  const parsedPage = parseInt(page)
+  const isValidPage = !Number.isNaN(parsedPage)
+  const clampedPage = clampPage(parsedPage)
+  const isCurrentPage = clampedPage === storeCharacters.requestFilters.page
+
+  if (isValidPage && !isCurrentPage) {
+    storeCharacters.requestFilters.page = clampedPage
+    storeCharacters.getCharacters()
+  }
+
+  pageInputRef.value.value = storeCharacters.requestFilters.page
+}
+
+const movePage = (pageOffset) => {
+  goToPage(storeCharacters.requestFilters.page + pageOffset)
 }
 </script>
 
