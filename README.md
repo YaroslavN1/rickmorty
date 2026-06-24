@@ -32,10 +32,10 @@ pnpm dev
 
 ## Scripts
 
-| Command | Description |
-| --- | --- |
-| `pnpm dev` | Start the Vite dev server |
-| `pnpm build` | Production build to `dist/` |
+| Command        | Description                          |
+| -------------- | ------------------------------------ |
+| `pnpm dev`     | Start the Vite dev server            |
+| `pnpm build`   | Production build to `dist/`          |
 | `pnpm preview` | Preview the production build locally |
 
 ## Deployment

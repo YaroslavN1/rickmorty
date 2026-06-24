@@ -3,14 +3,14 @@
     <div class="mx-auto">
       <div
         v-if="storeCharacters.charactersLoading"
-        class="text-gray-200 text-2xl max-w-full flex justify-center items-center"
+        class="flex max-w-full items-center justify-center text-2xl text-gray-200"
       >
         Characters loading...
       </div>
 
       <div
         v-else-if="storeCharacters.charactersCount > 0"
-        class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 justify-items-center gap-4 md:gap-6"
+        class="grid grid-cols-2 justify-items-center gap-4 sm:grid-cols-3 md:grid-cols-4 md:gap-6"
       >
         <CharacterItem
           v-for="character in storeCharacters.characterItems"
@@ -21,7 +21,7 @@
 
       <div
         v-else
-        class="text-gray-200 text-2xl max-w-full flex justify-center items-center"
+        class="flex max-w-full items-center justify-center text-2xl text-gray-200"
       >
         No characters found...
       </div>

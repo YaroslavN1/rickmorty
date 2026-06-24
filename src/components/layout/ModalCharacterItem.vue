@@ -1,38 +1,36 @@
 <template>
-  <teleport
-    to=".modals-container"
-  >
-    <section 
-      class="modal-background absolute p-3 z-10 top-0 left-0 w-full h-full text-gray-600 bg-white bg-opacity-95 flex justify-center items-center"
+  <teleport to=".modals-container">
+    <section
+      class="absolute left-0 top-0 z-10 flex h-full w-full items-center justify-center bg-white bg-opacity-95 p-3 text-gray-600"
     >
-      <a
-        ref="characterModalRef"  
-        href=""
-        @click.prevent="closeModal()"
-      >
-        <div class="modal-container p-3 sm:p-5 fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 max-w-xs w-full sm:max-w-3xl flex flex-col sm:flex-row rounded-md border border-gray-200 bg-white drop-shadow-2xl">
-          <img class="object-cover object-center rounded drop-shadow-md" :src="character.image" alt="blog">
+      <a ref="characterModalRef" href="" @click.prevent="closeModal()">
+        <div
+          class="fixed left-1/2 top-1/2 flex w-full max-w-xs -translate-x-1/2 -translate-y-1/2 flex-col rounded-md border border-gray-200 bg-white p-3 drop-shadow-2xl sm:max-w-3xl sm:flex-row sm:p-5"
+        >
+          <img
+            class="rounded object-cover object-center drop-shadow-md"
+            :src="character.image"
+            alt="blog"
+          />
 
           <div class="py-2 sm:py-0 sm:pl-8 sm:pr-28">
-            <h2 class="text-3xl sm:text-4xl font-semibold mt-2 sm:mt-0 sm:mb-3">{{ character.name }}</h2>
+            <h2 class="mt-2 text-3xl font-semibold sm:mb-3 sm:mt-0 sm:text-4xl">
+              {{ character.name }}
+            </h2>
             <div
               v-for="key in characterKeysFiltered"
               :key="key"
               class="text-md"
             >
-              <span
-                class="text-green-500 capitalize"
-              >
-                {{ key[0] }}:
-              </span>
+              <span class="capitalize text-green-500"> {{ key[0] }}: </span>
               <span>
                 {{ key[1] === '' ? '-' : key[1] }}
               </span>
             </div>
           </div>
-        
+
           <div
-            class="h-7 w-7 sm:h-6 sm:w-6 sm:text-xs rounded-full absolute top-5 right-5 flex justify-center items-center border border-gray-300 bg-gray-50 shrink-0"
+            class="absolute right-5 top-5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-gray-300 bg-gray-50 sm:h-6 sm:w-6 sm:text-xs"
           >
             <i class="fa-solid fa-x text-gray-500"></i>
           </div>
@@ -49,12 +47,12 @@ import { onClickOutside } from '@vueuse/core'
 const props = defineProps({
   character: {
     type: Object,
-    required: true
+    required: true,
   },
   characterModal: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 })
 
 const emit = defineEmits(['update:characterModal'])
@@ -65,22 +63,35 @@ const closeModal = () => {
 const characterModalRef = ref(null)
 onClickOutside(characterModalRef, () => closeModal())
 
-const characterKeys = ref(['status', 'species', 'type', 'gender', 'created', 'origin', 'location'])
-const characterKeysFiltered = Object.entries(props.character).filter(el => characterKeys.value.some(key => el[0] === key))
-characterKeysFiltered.forEach(i => {
-  if(i[0] === 'origin' || i[0] === 'location') {
+const characterKeys = ref([
+  'status',
+  'species',
+  'type',
+  'gender',
+  'created',
+  'origin',
+  'location',
+])
+const characterKeysFiltered = Object.entries(props.character).filter((el) =>
+  characterKeys.value.some((key) => el[0] === key),
+)
+characterKeysFiltered.forEach((i) => {
+  if (i[0] === 'origin' || i[0] === 'location') {
     i[1] = i[1].name
   }
 })
 
-let characterCreationDate = new Date(characterKeysFiltered.filter(el => el[0] === 'created')[0][1])
+let characterCreationDate = new Date(
+  characterKeysFiltered.filter((el) => el[0] === 'created')[0][1],
+)
 characterCreationDate = new Intl.DateTimeFormat('en-GB', {
-  year: "numeric",
-  month: "long",
-  day: "numeric",
-  hour: "numeric",
-  minute: "numeric"
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  hour: 'numeric',
+  minute: 'numeric',
 }).format(characterCreationDate)
 
-characterKeysFiltered.filter(el => el[0] === 'created')[0][1] = characterCreationDate
+characterKeysFiltered.filter((el) => el[0] === 'created')[0][1] =
+  characterCreationDate
 </script>

@@ -2,8 +2,6 @@ import { defineStore } from 'pinia'
 import { getCharacters } from 'rickmortyapi'
 import filterCategories from '@/mockdata/filterCategories.json'
 
-
-
 export const useStoreCharacters = defineStore('storeCharacters', {
   state: () => {
     return {
@@ -14,25 +12,25 @@ export const useStoreCharacters = defineStore('storeCharacters', {
       charactersLoading: true,
       charactersCount: 0,
       characterItems: [],
-      lastPage: 1
+      lastPage: 1,
     }
   },
   actions: {
-    init(){
+    init() {
       this.filterCategories = filterCategories
       this.getFiltersFromSessionStorage()
       this.getCharacters()
     },
 
     getFiltersFromSessionStorage() {
-      if(!sessionStorage.getItem('page')) {
+      if (!sessionStorage.getItem('page')) {
         sessionStorage.setItem('page', this.requestFilters.page)
       } else {
         const storedFilters = {}
         storedFilters.page = Number(sessionStorage.getItem('page'))
-        filterCategories.forEach(el => {
-          if(sessionStorage.getItem(el.name)) {
-          storedFilters[el.name] = sessionStorage.getItem(el.name)
+        filterCategories.forEach((el) => {
+          if (sessionStorage.getItem(el.name)) {
+            storedFilters[el.name] = sessionStorage.getItem(el.name)
           }
         })
         this.requestFilters = storedFilters
@@ -42,7 +40,7 @@ export const useStoreCharacters = defineStore('storeCharacters', {
     async getCharacters() {
       const response = await getCharacters(this.requestFilters)
       sessionStorage.setItem('page', this.requestFilters.page)
-      if(response.status === 200) {
+      if (response.status === 200) {
         const data = response.data
         this.charactersCount = data.info.count
         this.characterItems = data.results
@@ -57,7 +55,7 @@ export const useStoreCharacters = defineStore('storeCharacters', {
     },
 
     async setStoreFilters(filterName, subFilter) {
-      if(subFilter !== 'all' && subFilter !== '') {
+      if (subFilter !== 'all' && subFilter !== '') {
         this.requestFilters.page = 1
         this.requestFilters[filterName] = subFilter
         sessionStorage.setItem(filterName, subFilter)
@@ -76,15 +74,17 @@ export const useStoreCharacters = defineStore('storeCharacters', {
     },
 
     goToPage(page) {
-      if(page > 0 && page <= this.lastPage)
-        this.requestFilters.page = page
-        this.getCharacters()
+      if (page > 0 && page <= this.lastPage) this.requestFilters.page = page
+      this.getCharacters()
     },
 
     movePage(page) {
-      if(this.requestFilters.page + page <= this.lastPage && this.requestFilters.page + page >= 1)
+      if (
+        this.requestFilters.page + page <= this.lastPage &&
+        this.requestFilters.page + page >= 1
+      )
         this.requestFilters.page += page
-        this.getCharacters()
-    }
-  }
+      this.getCharacters()
+    },
+  },
 })
