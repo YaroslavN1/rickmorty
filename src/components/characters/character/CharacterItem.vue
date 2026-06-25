@@ -2,12 +2,10 @@
   <div
     class="rounded-md border border-gray-200 bg-white p-1 drop-shadow-sm sm:p-2"
   >
-    <ModalCharacterItem
-      v-if="modals.characterItem"
-      v-model:is-open="modals.characterItem"
-      :character="character"
-    />
-    <a href="/" @click.prevent="modals.characterItem = !modals.characterItem">
+    <a
+      href="/"
+      @click.prevent="isModalCharacterItemOpen = !isModalCharacterItemOpen"
+    >
       <div class="mb-3 overflow-hidden rounded object-cover object-center">
         <img
           :class="{ hidden: imgLoaded }"
@@ -31,31 +29,27 @@
         </span>
       </div>
     </a>
+
+    <ModalCharacterItem
+      v-if="isModalCharacterItemOpen"
+      v-model:is-open="isModalCharacterItemOpen"
+      :character="character"
+    />
   </div>
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref } from 'vue'
 import ModalCharacterItem from '@/components/characters/character/ModalCharacterItem.vue'
 
-const props = defineProps({
+defineProps({
   character: {
     type: Object,
     required: true,
-  },
-  filter: {
-    type: String,
-    default: '.',
-  },
-  subFilter: {
-    type: String,
-    default: '',
   },
 })
 
 const imgLoaded = ref(false)
 
-const modals = reactive({
-  characterItem: false,
-})
+const isModalCharacterItemOpen = ref(false)
 </script>
