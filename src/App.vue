@@ -1,8 +1,10 @@
 <template>
-  <div id="app">
+  <div id="app" class="flex min-h-screen flex-col">
     <PageHeader />
 
-    <main class="modals-container mx-auto mt-4 max-w-5xl p-6">
+    <main
+      class="modals-container mx-auto mt-4 flex max-w-5xl flex-1 flex-col p-6"
+    >
       <CharactersFilters />
 
       <NavigationButtons class="mt-6" />
