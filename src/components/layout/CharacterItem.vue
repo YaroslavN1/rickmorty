@@ -4,7 +4,7 @@
   >
     <ModalCharacterItem
       v-if="modals.characterItem"
-      v-model:character-modal="modals.characterItem"
+      v-model:is-open="modals.characterItem"
       :character="character"
     />
     <a href="/" @click.prevent="modals.characterItem = !modals.characterItem">

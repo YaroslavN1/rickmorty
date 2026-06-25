@@ -2,7 +2,7 @@
   <div id="app">
     <PageHeader />
 
-    <main class="modals-container relative mx-auto mt-4 max-w-5xl p-6">
+    <main class="modals-container mx-auto mt-4 max-w-5xl p-6">
       <CharacterFilters />
 
       <NavigationButtons class="mt-6" />
