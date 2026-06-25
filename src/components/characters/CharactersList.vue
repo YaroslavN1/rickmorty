@@ -8,7 +8,7 @@
     </div>
 
     <div
-      v-else-if="storeCharacters.charactersCount > 0"
+      v-else-if="storeCharacters.characterItems.length > 0"
       class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 md:gap-6"
     >
       <CharacterItem
