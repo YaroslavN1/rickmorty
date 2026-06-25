@@ -30,7 +30,7 @@
 </template>
 
 <script setup>
-import CharacterItem from '@/components/layout/CharacterItem.vue'
+import CharacterItem from '@/components/characters/character/CharacterItem.vue'
 import { useStoreCharacters } from '@/stores/storeCharacters'
 
 const storeCharacters = useStoreCharacters()
