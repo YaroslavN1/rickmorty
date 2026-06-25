@@ -3,7 +3,7 @@
     <PageHeader />
 
     <main class="modals-container mx-auto mt-4 max-w-5xl p-6">
-      <CharacterFilters />
+      <CharactersFilters />
 
       <NavigationButtons class="mt-6" />
 
@@ -19,9 +19,9 @@
 <script setup>
 import PageHeader from '@/components/layout/PageHeader.vue'
 import PageFooter from '@/components/layout/PageFooter.vue'
-import CharacterFilters from '@/components/layout/CharacterFilters.vue'
+import CharactersFilters from '@/components/characters/CharactersFilters.vue'
 import NavigationButtons from '@/components/navigation/NavigationButtons.vue'
-import CharactersList from '@/components/layout/CharactersList.vue'
+import CharactersList from '@/components/characters/CharactersList.vue'
 import { useStoreCharacters } from '@/stores/storeCharacters'
 
 const storeCharacters = useStoreCharacters()

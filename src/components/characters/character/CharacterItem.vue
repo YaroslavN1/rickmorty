@@ -36,7 +36,7 @@
 
 <script setup>
 import { ref, reactive } from 'vue'
-import ModalCharacterItem from '@/components/layout/ModalCharacterItem.vue'
+import ModalCharacterItem from '@/components/characters/character/ModalCharacterItem.vue'
 
 const props = defineProps({
   character: {
