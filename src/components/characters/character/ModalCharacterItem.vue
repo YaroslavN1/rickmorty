@@ -1,30 +1,34 @@
 <template>
   <teleport to=".modals-container">
-    <section class="fixed inset-0 z-10 bg-white bg-opacity-95 text-gray-600">
+    <section
+      class="fixed inset-0 z-10 flex items-center justify-center bg-white bg-opacity-95"
+    >
       <div
         ref="characterModalRef"
-        class="absolute left-1/2 top-1/2 flex w-full max-w-xs -translate-x-1/2 -translate-y-1/2 flex-col rounded-md border border-gray-200 bg-white p-3 drop-shadow-2xl sm:max-w-3xl sm:flex-row sm:p-5"
+        class="flex w-full max-w-xs flex-col rounded-md border border-gray-200 bg-white p-3 pb-5 drop-shadow-2xl sm:max-w-3xl sm:flex-row sm:p-5"
       >
         <img
-          class="rounded object-cover drop-shadow-md"
+          class="mb-4 rounded drop-shadow-md sm:mb-0 sm:mr-8"
           :src="character.image"
           :alt="character.name"
         />
 
-        <div class="py-2 sm:py-0 sm:pl-8 sm:pr-28">
-          <h2 class="mt-2 text-3xl font-semibold sm:mb-3 sm:mt-0 sm:text-4xl">
+        <div>
+          <h2 class="text-3xl font-semibold text-gray-600 sm:mb-3 sm:text-4xl">
             {{ character.name }}
           </h2>
           <div v-for="[key, value] in characterKeysFiltered" :key="key">
             <span class="capitalize text-green-500"> {{ key }}: </span>
-            <span v-if="['origin', 'location'].includes(key)">
-              {{ value.name || '-' }}
-            </span>
-            <span v-else-if="key === 'created'">
-              {{ formatDate(value) }}
-            </span>
-            <span v-else>
-              {{ value === '' ? '-' : value }}
+            <span class="text-gray-600">
+              <span v-if="['origin', 'location'].includes(key)">
+                {{ value.name || '-' }}
+              </span>
+              <span v-else-if="key === 'created'">
+                {{ formatDate(value) }}
+              </span>
+              <span v-else>
+                {{ value === '' ? '-' : value }}
+              </span>
             </span>
           </div>
         </div>
