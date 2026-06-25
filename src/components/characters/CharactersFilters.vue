@@ -3,15 +3,15 @@
     <a
       href=""
       class="relative flex text-xl"
-      :class="{ 'filters-icon-anim': animateIcon }"
-      @click.prevent="openCloseFilters = !openCloseFilters"
+      :class="{ 'filters-icon-anim': isIconAnimation }"
+      @click.prevent="isOpenFilters = !isOpenFilters"
     >
       <i
         class="fa-solid fa-filter transition-colors duration-100 ease-in-out hover:text-green-200"
-        :class="[openCloseFilters ? 'text-green-300' : 'text-gray-300']"
+        :class="[isOpenFilters ? 'text-gray-300' : 'text-green-300']"
       />
       <p
-        v-if="Object.keys(requestFilters).length > 1"
+        v-if="isModifiedFilters"
         class="absolute"
         style="top: -1px; right: -1px"
       >
@@ -20,10 +20,7 @@
     </a>
   </div>
 
-  <div
-    class="flex flex-col items-center transition-all duration-300 ease-in-out"
-    :class="{ 'h-0': openCloseFilters, 'overflow-hidden': openCloseFilters }"
-  >
+  <div v-if="isOpenFilters" class="flex flex-col items-center">
     <input
       id="characterName"
       v-model="selectedFilters.name"
@@ -60,7 +57,7 @@
     </div>
 
     <a
-      v-if="Object.keys(requestFilters).length > 1"
+      v-if="isModifiedFilters"
       href=""
       class="mt-4 text-red-400 underline transition-colors duration-100 ease-in-out hover:text-red-300"
       @click.prevent="resetFilters"
@@ -71,7 +68,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useStoreCharacters } from '@/stores/storeCharacters'
 import { storeToRefs } from 'pinia'
 
@@ -79,7 +76,8 @@ const storeCharacters = useStoreCharacters()
 const { requestFilters, filterCategories } = storeToRefs(storeCharacters)
 const { setStoreFilter, resetStoreFilters } = storeCharacters
 
-const openCloseFilters = ref(true)
+const isOpenFilters = ref(false)
+
 const selectedFilters = ref({
   name: '',
   status: 'all',
@@ -92,6 +90,11 @@ Object.keys(selectedFilters.value).forEach((el) => {
     selectedFilters.value[el] = requestFilters.value[el]
   }
 })
+const isModifiedFilters = computed(
+  () =>
+    Object.keys(requestFilters.value).filter((key) => key !== 'page').length >
+    0,
+)
 const resetFilters = () => {
   selectedFilters.value.name = ''
   selectedFilters.value.status = 'all'
@@ -101,11 +104,11 @@ const resetFilters = () => {
   resetStoreFilters()
 }
 
-let animateIcon = ref(true)
+const isIconAnimation = ref(true)
 if (!sessionStorage.getItem('iconAnimated')) {
   sessionStorage.setItem('iconAnimated', true)
 } else {
-  animateIcon.value = false
+  isIconAnimation.value = false
 }
 </script>
 
