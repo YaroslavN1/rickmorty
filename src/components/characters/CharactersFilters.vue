@@ -68,14 +68,6 @@
       clear filters
     </a>
   </div>
-
-  <div class="mt-6 flex place-content-center">
-    <p class="ml-1">{{ idRange()[0] }} - {{ idRange()[1] }}</p>
-    <p class="ml-2">of</p>
-    <p class="ml-2 text-green-400">
-      {{ storeCharacters.charactersCount }}
-    </p>
-  </div>
 </template>
 
 <script setup>
@@ -83,21 +75,6 @@ import { ref } from 'vue'
 import { useStoreCharacters } from '@/stores/storeCharacters'
 
 const storeCharacters = useStoreCharacters()
-
-const idRange = () => {
-  const currentPage = storeCharacters.requestFilters.page
-  const charactersCount = storeCharacters.charactersCount
-  const charactersLength = storeCharacters.characterItems.length
-
-  if (charactersLength === 0) {
-    return [0, 0]
-  }
-
-  return [
-    (currentPage - 1) * 20 + 1,
-    currentPage * 20 > charactersCount ? charactersCount : currentPage * 20,
-  ]
-}
 
 const openCloseFilters = ref(true)
 const filterCategories = storeCharacters.filterCategories
