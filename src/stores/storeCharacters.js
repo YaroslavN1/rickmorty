@@ -54,7 +54,7 @@ export const useStoreCharacters = defineStore('storeCharacters', {
       }
     },
 
-    async setStoreFilters(filterName, subFilter) {
+    async setStoreFilter(filterName, subFilter) {
       if (subFilter !== 'all' && subFilter !== '') {
         this.requestFilters.page = 1
         this.requestFilters[filterName] = subFilter

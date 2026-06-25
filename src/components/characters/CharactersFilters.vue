@@ -11,7 +11,7 @@
         :class="[openCloseFilters ? 'text-green-300' : 'text-gray-300']"
       />
       <p
-        v-if="Object.keys(storeCharacters.requestFilters).length > 1"
+        v-if="Object.keys(requestFilters).length > 1"
         class="absolute"
         style="top: -1px; right: -1px"
       >
@@ -30,7 +30,7 @@
       placeholder="Search by name..."
       type="text"
       class="focus:ring-5 mt-6 h-8 w-2/5 min-w-max rounded-2xl border border-gray-300 text-center outline-none drop-shadow-sm transition-colors duration-200 ease-in-out placeholder:text-gray-300 focus:border-green-300 focus:ring-green-200"
-      @input="setFilter('name', selectedFilters.name)"
+      @input="setStoreFilter('name', selectedFilters.name)"
     />
     <div class="mt-6 grid max-w-xl grid-cols-2 gap-x-10 gap-y-1">
       <label
@@ -45,7 +45,7 @@
           v-model="selectedFilters[filter.name]"
           class="w-full text-ellipsis text-center capitalize outline-0"
           name="filters"
-          @change="setFilter(filter.name, selectedFilters[filter.name])"
+          @change="setStoreFilter(filter.name, selectedFilters[filter.name])"
         >
           <option selected value="all">-</option>
           <option
@@ -60,7 +60,7 @@
     </div>
 
     <a
-      v-if="Object.keys(storeCharacters.requestFilters).length > 1"
+      v-if="Object.keys(requestFilters).length > 1"
       href=""
       class="mt-4 text-red-400 underline transition-colors duration-100 ease-in-out hover:text-red-300"
       @click.prevent="resetFilters"
@@ -73,11 +73,13 @@
 <script setup>
 import { ref } from 'vue'
 import { useStoreCharacters } from '@/stores/storeCharacters'
+import { storeToRefs } from 'pinia'
 
 const storeCharacters = useStoreCharacters()
+const { requestFilters, filterCategories } = storeToRefs(storeCharacters)
+const { setStoreFilter, resetStoreFilters } = storeCharacters
 
 const openCloseFilters = ref(true)
-const filterCategories = storeCharacters.filterCategories
 const selectedFilters = ref({
   name: '',
   status: 'all',
@@ -86,20 +88,17 @@ const selectedFilters = ref({
   gender: 'all',
 })
 Object.keys(selectedFilters.value).forEach((el) => {
-  if (storeCharacters.requestFilters[el]) {
-    selectedFilters.value[el] = storeCharacters.requestFilters[el]
+  if (requestFilters.value[el]) {
+    selectedFilters.value[el] = requestFilters.value[el]
   }
 })
-const setFilter = (filterName, subFilter) => {
-  storeCharacters.setStoreFilters(filterName, subFilter)
-}
 const resetFilters = () => {
   selectedFilters.value.name = ''
   selectedFilters.value.status = 'all'
   selectedFilters.value.species = 'all'
   selectedFilters.value.type = 'all'
   selectedFilters.value.gender = 'all'
-  storeCharacters.resetStoreFilters()
+  resetStoreFilters()
 }
 
 let animateIcon = ref(true)
