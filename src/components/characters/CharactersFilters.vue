@@ -20,46 +20,30 @@
     </a>
   </div>
 
-  <div v-if="isOpenFilters" class="flex flex-col items-center">
+  <div v-if="isOpenFilters" class="mt-6 flex flex-col items-center gap-6">
     <input
       id="characterName"
       v-model="selectedFilters.name"
       placeholder="Search by name..."
       type="text"
-      class="focus:ring-5 mt-6 h-8 w-2/5 min-w-max rounded-2xl border border-gray-300 text-center outline-none drop-shadow-sm transition-colors duration-200 ease-in-out placeholder:text-gray-300 focus:border-green-300 focus:ring-green-200"
+      class="focus:ring-5 h-8 w-2/5 min-w-max rounded-2xl border border-gray-300 text-center outline-none drop-shadow-sm transition-colors duration-200 ease-in-out placeholder:text-gray-300 focus:border-green-300 focus:ring-green-200"
       @input="setStoreFilter('name', selectedFilters.name)"
     />
-    <div class="mt-6 grid max-w-xl grid-cols-2 gap-x-10 gap-y-1">
-      <label
-        v-for="filter in filterCategories"
-        :key="filter.id"
-        for="dropdown"
-        class="flex"
-      >
-        <span class="mr-2 capitalize text-green-500"> {{ filter.name }}: </span>
-        <select
-          id="filters"
-          v-model="selectedFilters[filter.name]"
-          class="w-full text-ellipsis text-center capitalize outline-0"
-          name="filters"
-          @change="setStoreFilter(filter.name, selectedFilters[filter.name])"
-        >
-          <option selected value="all">-</option>
-          <option
-            v-for="subFilter in filter.subFilters"
-            :key="subFilter"
-            :value="subFilter"
-          >
-            {{ subFilter }}
-          </option>
-        </select>
-      </label>
+    <div class="grid max-w-xl grid-cols-2 gap-x-10 gap-y-1">
+      <BaseDropdown
+        v-for="{ name, subFilters } in filterCategories"
+        :key="name"
+        v-model="selectedFilters[name]"
+        :label="name"
+        :options="subFilters"
+        @update:model-value="(value) => setStoreFilter(name, value)"
+      />
     </div>
 
     <a
       v-if="isModifiedFilters"
       href=""
-      class="mt-4 text-red-400 underline transition-colors duration-100 ease-in-out hover:text-red-300"
+      class="text-red-400 underline transition-colors duration-100 ease-in-out hover:text-red-300"
       @click.prevent="resetFilters"
     >
       clear filters
@@ -71,6 +55,7 @@
 import { computed, ref } from 'vue'
 import { useStoreCharacters } from '@/stores/storeCharacters'
 import { storeToRefs } from 'pinia'
+import BaseDropdown from '../common/BaseDropdown.vue'
 
 const storeCharacters = useStoreCharacters()
 const { requestFilters, filterCategories } = storeToRefs(storeCharacters)
