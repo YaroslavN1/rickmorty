@@ -21,13 +21,12 @@
   </div>
 
   <div v-if="isOpenFilters" class="mt-6 flex flex-col items-center gap-6">
-    <input
-      id="characterName"
+    <BaseInput
       v-model="selectedFilters.name"
+      class="h-8 w-2/5 rounded-2xl"
       placeholder="Search by name..."
       type="text"
-      class="focus:ring-5 h-8 w-2/5 min-w-max rounded-2xl border border-gray-300 text-center outline-none drop-shadow-sm transition-colors duration-200 ease-in-out placeholder:text-gray-300 focus:border-green-300 focus:ring-green-200"
-      @input="setStoreFilter('name', selectedFilters.name)"
+      @update:model-value="(value) => setStoreFilter('name', value)"
     />
     <div class="grid max-w-xl grid-cols-2 gap-x-10 gap-y-1">
       <BaseDropdown
@@ -56,6 +55,7 @@ import { computed, ref } from 'vue'
 import { useStoreCharacters } from '@/stores/storeCharacters'
 import { storeToRefs } from 'pinia'
 import BaseDropdown from '../common/BaseDropdown.vue'
+import BaseInput from '../common/BaseInput.vue'
 
 const storeCharacters = useStoreCharacters()
 const { requestFilters, filterCategories } = storeToRefs(storeCharacters)
