@@ -6,10 +6,16 @@
       href="/"
       @click.prevent="isModalCharacterItemOpen = !isModalCharacterItemOpen"
     >
-      <div class="mb-3 overflow-hidden rounded">
-        <img v-show="!imgLoaded" :src="avatarPlaceholder" alt="avatar" />
+      <div class="mb-3">
+        <img
+          v-show="!imgLoaded"
+          class="aspect-square w-full max-w-[300px] rounded object-cover object-center"
+          :src="avatarPlaceholder"
+          alt="avatar"
+        />
         <img
           v-show="imgLoaded"
+          class="aspect-square w-full max-w-[300px] rounded object-cover object-center"
           :src="character.image"
           :alt="character.name"
           @load="imgLoaded = true"

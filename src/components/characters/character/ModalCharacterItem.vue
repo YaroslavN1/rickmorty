@@ -8,7 +8,7 @@
         class="flex w-full max-w-xs flex-col rounded-md border border-gray-200 bg-white p-3 pb-5 drop-shadow-2xl sm:max-w-3xl sm:flex-row sm:p-5"
       >
         <img
-          class="mb-4 rounded drop-shadow-md sm:mb-0 sm:mr-8"
+          class="mb-4 aspect-square w-full max-w-[300px] flex-shrink-0 rounded object-cover object-center drop-shadow-md sm:mb-0 sm:mr-8 sm:w-[300px]"
           :src="character.image"
           :alt="character.name"
         />
