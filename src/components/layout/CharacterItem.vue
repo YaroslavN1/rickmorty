@@ -1,61 +1,58 @@
 <template>
   <div
-    class="rounded-md border border-gray-200 bg-white p-1 drop-shadow-sm sm:p-2"
+    class="rounded-md border border-gray-200 bg-white px-2 pb-4 pt-2 drop-shadow-sm"
   >
-    <ModalCharacterItem
-      v-if="modals.characterItem"
-      v-model:character-modal="modals.characterItem"
-      :character="character"
-    />
-    <a href="/" @click.prevent="modals.characterItem = !modals.characterItem">
-      <div class="mb-3 overflow-hidden rounded object-cover object-center">
+    <a
+      href="/"
+      @click.prevent="isModalCharacterItemOpen = !isModalCharacterItemOpen"
+    >
+      <div class="mb-3">
         <img
-          :class="{ hidden: imgLoaded }"
-          src="@/images/avatar_placeholder.jpeg"
+          v-show="!imgLoaded"
+          class="aspect-square w-full max-w-[300px] rounded object-cover object-center"
+          :src="avatarPlaceholder"
           alt="avatar"
         />
         <img
-          :class="{ hidden: !imgLoaded }"
+          v-show="imgLoaded"
+          class="aspect-square w-full max-w-[300px] rounded object-cover object-center"
           :src="character.image"
-          alt="avatar"
+          :alt="character.name"
           @load="imgLoaded = true"
         />
       </div>
-      <h2 class="text-xl font-semibold leading-snug text-gray-800">
+      <h2 class="text-xl font-semibold">
         {{ character.name }}
       </h2>
-      <div class="mb-2 text-sm">
+      <div class="text-sm">
         <span class="capitalize text-green-500"> Species: </span>
         <span>
           {{ character.species }}
         </span>
       </div>
     </a>
+
+    <ModalCharacterItem
+      v-if="isModalCharacterItemOpen"
+      v-model:is-open="isModalCharacterItemOpen"
+      :character="character"
+    />
   </div>
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref } from 'vue'
 import ModalCharacterItem from '@/components/layout/ModalCharacterItem.vue'
+import avatarPlaceholder from '@/images/avatar_placeholder.jpeg'
 
-const props = defineProps({
+defineProps({
   character: {
     type: Object,
     required: true,
-  },
-  filter: {
-    type: String,
-    default: '.',
-  },
-  subFilter: {
-    type: String,
-    default: '',
   },
 })
 
 const imgLoaded = ref(false)
 
-const modals = reactive({
-  characterItem: false,
-})
+const isModalCharacterItemOpen = ref(false)
 </script>
