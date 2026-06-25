@@ -19,9 +19,9 @@
 <script setup>
 import PageHeader from '@/components/layout/PageHeader.vue'
 import PageFooter from '@/components/layout/PageFooter.vue'
-import CharactersFilters from '@/components/layout/CharactersFilters.vue'
+import CharactersFilters from '@/components/characters/CharactersFilters.vue'
 import NavigationButtons from '@/components/navigation/NavigationButtons.vue'
-import CharactersList from '@/components/layout/CharactersList.vue'
+import CharactersList from '@/components/characters/CharactersList.vue'
 import { useStoreCharacters } from '@/stores/storeCharacters'
 
 const storeCharacters = useStoreCharacters()

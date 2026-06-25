@@ -42,7 +42,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import ModalCharacterItem from '@/components/layout/ModalCharacterItem.vue'
+import ModalCharacterItem from '@/components/characters/character/ModalCharacterItem.vue'
 import avatarPlaceholder from '@/images/avatar_placeholder.jpeg'
 
 defineProps({
