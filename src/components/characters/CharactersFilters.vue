@@ -1,136 +1,101 @@
 <template>
-  <div class="flex place-content-center">
-    <a
-      href=""
-      class="relative flex text-xl"
-      :class="{ 'filters-icon-anim': animateIcon }"
-      @click.prevent="openCloseFilters = !openCloseFilters"
+  <div class="flex justify-center">
+    <button
+      class="relative flex"
+      :class="{ 'filters-icon-anim': isIconAnimation }"
+      @click="isOpenFilters = !isOpenFilters"
     >
       <i
-        class="fa-solid fa-filter transition-colors duration-100 ease-in-out hover:text-green-200"
-        :class="[openCloseFilters ? 'text-green-300' : 'text-gray-300']"
+        class="fa-solid fa-filter text-xl transition-colors hover:text-green-200"
+        :class="[isOpenFilters ? 'text-gray-300' : 'text-green-300']"
       />
-      <p
-        v-if="Object.keys(storeCharacters.requestFilters).length > 1"
-        class="absolute"
-        style="top: -1px; right: -1px"
-      >
-        <span class="block h-2 w-2 rounded-2xl bg-red-500" />
-      </p>
-    </a>
+      <span
+        v-if="isModifiedFilters"
+        class="absolute -right-px -top-px h-2 w-2 rounded-full bg-red-500"
+      />
+    </button>
   </div>
 
-  <div
-    class="flex flex-col items-center transition-all duration-300 ease-in-out"
-    :class="{ 'h-0': openCloseFilters, 'overflow-hidden': openCloseFilters }"
-  >
-    <input
-      id="characterName"
+  <div v-if="isOpenFilters" class="mt-6 flex flex-col items-center gap-6">
+    <BaseInput
       v-model="selectedFilters.name"
+      class="h-8 w-2/5 rounded-2xl"
       placeholder="Search by name..."
       type="text"
-      class="focus:ring-5 mt-6 h-8 w-2/5 min-w-max rounded-2xl border border-gray-300 text-center outline-none drop-shadow-sm transition-colors duration-200 ease-in-out placeholder:text-gray-300 focus:border-green-300 focus:ring-green-200"
-      @input="setFilter('name', selectedFilters.name)"
+      @update:model-value="(value) => setStoreFilter('name', value)"
     />
-    <div class="mt-6 grid max-w-xl grid-cols-2 gap-x-10 gap-y-1">
-      <label
-        v-for="filter in filterCategories"
-        :key="filter.id"
-        for="dropdown"
-        class="flex"
-      >
-        <span class="mr-2 capitalize text-green-500"> {{ filter.name }}: </span>
-        <select
-          id="filters"
-          v-model="selectedFilters[filter.name]"
-          class="w-full text-ellipsis text-center capitalize outline-0"
-          name="filters"
-          @change="setFilter(filter.name, selectedFilters[filter.name])"
-        >
-          <option selected value="all">-</option>
-          <option
-            v-for="subFilter in filter.subFilters"
-            :key="subFilter"
-            :value="subFilter"
-          >
-            {{ subFilter }}
-          </option>
-        </select>
-      </label>
+    <div class="grid max-w-xl grid-cols-2 gap-x-10 gap-y-1">
+      <BaseDropdown
+        v-for="{ name, subFilters } in filterCategories"
+        :key="name"
+        v-model="selectedFilters[name]"
+        :label="name"
+        :options="subFilters"
+        @update:model-value="(value) => setStoreFilter(name, value)"
+      />
     </div>
 
-    <a
-      v-if="Object.keys(storeCharacters.requestFilters).length > 1"
-      href=""
-      class="mt-4 text-red-400 underline transition-colors duration-100 ease-in-out hover:text-red-300"
-      @click.prevent="resetFilters"
+    <button
+      v-if="isModifiedFilters"
+      class="text-red-400 underline transition-colors hover:text-red-300"
+      @click="resetFilters"
     >
       clear filters
-    </a>
-  </div>
-
-  <div class="mt-6 flex place-content-center">
-    <p class="ml-1">{{ idRange()[0] }} - {{ idRange()[1] }}</p>
-    <p class="ml-2">of</p>
-    <p class="ml-2 text-green-400">
-      {{ storeCharacters.charactersCount }}
-    </p>
+    </button>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { computed, onBeforeMount, ref } from 'vue'
 import { useStoreCharacters } from '@/stores/storeCharacters'
+import { storeToRefs } from 'pinia'
+import BaseDropdown from '../common/BaseDropdown.vue'
+import BaseInput from '../common/BaseInput.vue'
+import filterCategories from '@/mockdata/filterCategories.json'
 
 const storeCharacters = useStoreCharacters()
+const { requestFilters } = storeToRefs(storeCharacters)
+const { setStoreFilter, resetStoreFilters } = storeCharacters
 
-const idRange = () => {
-  const currentPage = storeCharacters.requestFilters.page
-  const charactersCount = storeCharacters.charactersCount
-  const charactersLength = storeCharacters.characterItems.length
+const isOpenFilters = ref(false)
 
-  if (charactersLength === 0) {
-    return [0, 0]
-  }
-
-  return [
-    (currentPage - 1) * 20 + 1,
-    currentPage * 20 > charactersCount ? charactersCount : currentPage * 20,
-  ]
-}
-
-const openCloseFilters = ref(true)
-const filterCategories = storeCharacters.filterCategories
-const selectedFilters = ref({
+const filtersDefault = {
   name: '',
   status: 'all',
   species: 'all',
   type: 'all',
   gender: 'all',
+}
+const selectedFilters = ref({
+  ...filtersDefault,
 })
-Object.keys(selectedFilters.value).forEach((el) => {
-  if (storeCharacters.requestFilters[el]) {
-    selectedFilters.value[el] = storeCharacters.requestFilters[el]
-  }
-})
-const setFilter = (filterName, subFilter) => {
-  storeCharacters.setStoreFilters(filterName, subFilter)
+const isModifiedFilters = computed(
+  () =>
+    Object.keys(requestFilters.value).filter((key) => key !== 'page').length >
+    0,
+)
+const syncFiltersFromStore = () => {
+  Object.keys(selectedFilters.value).forEach((el) => {
+    if (requestFilters.value[el]) {
+      selectedFilters.value[el] = requestFilters.value[el]
+    }
+  })
 }
 const resetFilters = () => {
-  selectedFilters.value.name = ''
-  selectedFilters.value.status = 'all'
-  selectedFilters.value.species = 'all'
-  selectedFilters.value.type = 'all'
-  selectedFilters.value.gender = 'all'
-  storeCharacters.resetStoreFilters()
+  selectedFilters.value = { ...filtersDefault }
+  resetStoreFilters()
 }
 
-let animateIcon = ref(true)
+const isIconAnimation = ref(true)
 if (!sessionStorage.getItem('iconAnimated')) {
   sessionStorage.setItem('iconAnimated', true)
 } else {
-  animateIcon.value = false
+  isIconAnimation.value = false
 }
+
+onBeforeMount(() => {
+  syncFiltersFromStore()
+})
 </script>
 
 <style scoped>

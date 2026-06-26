@@ -10,7 +10,7 @@ export const useStoreCharacters = defineStore('storeCharacters', {
       },
       filterCategories: [],
       charactersLoading: true,
-      charactersCount: 0,
+      charactersTotalCount: 0,
       characterItems: [],
       lastPage: 1,
     }
@@ -42,19 +42,19 @@ export const useStoreCharacters = defineStore('storeCharacters', {
       sessionStorage.setItem('page', this.requestFilters.page)
       if (response.status === 200) {
         const data = response.data
-        this.charactersCount = data.info.count
+        this.charactersTotalCount = data.info.count
         this.characterItems = data.results
         this.lastPage = data.info.pages
         this.charactersLoading = false
       } else {
         this.characterItems = []
         this.charactersLoading = false
-        this.charactersCount = 0
+        this.charactersTotalCount = 0
         this.lastPage = 1
       }
     },
 
-    async setStoreFilters(filterName, subFilter) {
+    async setStoreFilter(filterName, subFilter) {
       if (subFilter !== 'all' && subFilter !== '') {
         this.requestFilters.page = 1
         this.requestFilters[filterName] = subFilter
