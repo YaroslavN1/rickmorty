@@ -1,23 +1,19 @@
 <template>
-  <div class="flex place-content-center">
-    <a
-      href=""
-      class="relative flex text-xl"
+  <div class="flex justify-center">
+    <button
+      class="relative flex"
       :class="{ 'filters-icon-anim': isIconAnimation }"
-      @click.prevent="isOpenFilters = !isOpenFilters"
+      @click="isOpenFilters = !isOpenFilters"
     >
       <i
-        class="fa-solid fa-filter transition-colors duration-100 ease-in-out hover:text-green-200"
+        class="fa-solid fa-filter text-xl transition-colors hover:text-green-200"
         :class="[isOpenFilters ? 'text-gray-300' : 'text-green-300']"
       />
-      <p
+      <span
         v-if="isModifiedFilters"
-        class="absolute"
-        style="top: -1px; right: -1px"
-      >
-        <span class="block h-2 w-2 rounded-2xl bg-red-500" />
-      </p>
-    </a>
+        class="absolute -right-px -top-px h-2 w-2 rounded-full bg-red-500"
+      />
+    </button>
   </div>
 
   <div v-if="isOpenFilters" class="mt-6 flex flex-col items-center gap-6">
@@ -39,14 +35,13 @@
       />
     </div>
 
-    <a
+    <button
       v-if="isModifiedFilters"
-      href=""
-      class="text-red-400 underline transition-colors duration-100 ease-in-out hover:text-red-300"
-      @click.prevent="resetFilters"
+      class="text-red-400 underline transition-colors hover:text-red-300"
+      @click="resetFilters"
     >
       clear filters
-    </a>
+    </button>
   </div>
 </template>
 
