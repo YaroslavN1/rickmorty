@@ -46,7 +46,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, onBeforeMount, ref } from 'vue'
 import { useStoreCharacters } from '@/stores/storeCharacters'
 import { storeToRefs } from 'pinia'
 import BaseDropdown from '../common/BaseDropdown.vue'
@@ -59,29 +59,30 @@ const { setStoreFilter, resetStoreFilters } = storeCharacters
 
 const isOpenFilters = ref(false)
 
-const selectedFilters = ref({
+const filtersDefault = {
   name: '',
   status: 'all',
   species: 'all',
   type: 'all',
   gender: 'all',
-})
-Object.keys(selectedFilters.value).forEach((el) => {
-  if (requestFilters.value[el]) {
-    selectedFilters.value[el] = requestFilters.value[el]
-  }
+}
+const selectedFilters = ref({
+  ...filtersDefault,
 })
 const isModifiedFilters = computed(
   () =>
     Object.keys(requestFilters.value).filter((key) => key !== 'page').length >
     0,
 )
+const syncFiltersFromStore = () => {
+  Object.keys(selectedFilters.value).forEach((el) => {
+    if (requestFilters.value[el]) {
+      selectedFilters.value[el] = requestFilters.value[el]
+    }
+  })
+}
 const resetFilters = () => {
-  selectedFilters.value.name = ''
-  selectedFilters.value.status = 'all'
-  selectedFilters.value.species = 'all'
-  selectedFilters.value.type = 'all'
-  selectedFilters.value.gender = 'all'
+  selectedFilters.value = { ...filtersDefault }
   resetStoreFilters()
 }
 
@@ -91,6 +92,10 @@ if (!sessionStorage.getItem('iconAnimated')) {
 } else {
   isIconAnimation.value = false
 }
+
+onBeforeMount(() => {
+  syncFiltersFromStore()
+})
 </script>
 
 <style scoped>
