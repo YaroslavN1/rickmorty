@@ -18,15 +18,15 @@ const { requestFilters, charactersTotalCount, characterItems } =
 
 const itemsRange = computed(() => {
   const currentPage = requestFilters.value.page
-  const pageSize = characterItems.value.length
+  const defaultPageSize = 20
 
-  if (pageSize === 0) {
+  if (characterItems.value.length === 0) {
     return [0, 0]
   }
 
   return [
-    (currentPage - 1) * pageSize + 1,
-    Math.min(currentPage * pageSize, charactersTotalCount.value),
+    (currentPage - 1) * defaultPageSize + 1,
+    Math.min(currentPage * defaultPageSize, charactersTotalCount.value),
   ]
 })
 </script>
