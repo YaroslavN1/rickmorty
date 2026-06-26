@@ -1,10 +1,18 @@
 <template>
   <div class="flex h-8 justify-center">
-    <BaseButton :disabled="isFirstPage" @click="goToPage(1)">
+    <BaseButton
+      class="rounded px-4"
+      :disabled="isFirstPage"
+      @click="goToPage(1)"
+    >
       First
     </BaseButton>
 
-    <BaseButton class="ml-5" :disabled="isFirstPage" @click="movePage(-1)">
+    <BaseButton
+      class="ml-5 rounded px-4"
+      :disabled="isFirstPage"
+      @click="movePage(-1)"
+    >
       &lt;
     </BaseButton>
 
@@ -16,9 +24,19 @@
       @keyup.enter="goToPage(pageInput)"
     />
 
-    <BaseButton :disabled="isLastPage" @click="movePage(1)"> &gt; </BaseButton>
+    <BaseButton
+      class="rounded px-4"
+      :disabled="isLastPage"
+      @click="movePage(1)"
+    >
+      &gt;
+    </BaseButton>
 
-    <BaseButton class="ml-5" :disabled="isLastPage" @click="goToPage(lastPage)">
+    <BaseButton
+      class="ml-5 rounded px-4"
+      :disabled="isLastPage"
+      @click="goToPage(lastPage)"
+    >
       Last
     </BaseButton>
   </div>
