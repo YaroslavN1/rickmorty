@@ -52,7 +52,7 @@ export const useStoreCharacters = defineStore('storeCharacters', {
     },
 
     async setStoreFilter(name, value) {
-      if (value !== 'all' && value !== '') {
+      if (!!value && value !== 'all') {
         this.requestFilters.page = 1
         this.requestFilters[name] = value
       } else {
