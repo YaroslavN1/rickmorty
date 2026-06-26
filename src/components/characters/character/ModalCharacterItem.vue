@@ -33,14 +33,13 @@
           </div>
         </div>
 
-        <button
-          type="button"
+        <BaseButton
           aria-label="Close"
-          class="absolute right-5 top-5 flex h-7 w-7 items-center justify-center rounded-full border border-gray-300 bg-gray-50 sm:h-6 sm:w-6 sm:text-xs"
+          class="absolute right-5 top-5 grid size-7 place-items-center rounded-full sm:size-6 sm:text-xs"
           @click="closeModal()"
         >
           <i class="fa-solid fa-x text-gray-500"></i>
-        </button>
+        </BaseButton>
       </div>
     </section>
   </teleport>
@@ -48,6 +47,7 @@
 
 <script setup>
 import { ref } from 'vue'
+import BaseButton from '@/components/common/BaseButton.vue'
 import { onClickOutside } from '@vueuse/core'
 
 const props = defineProps({
