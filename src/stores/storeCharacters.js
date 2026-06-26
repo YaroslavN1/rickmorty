@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { getCharacters } from 'rickmortyapi'
 import { filterNames } from '@/constants/filters.js'
+import router from '@/router/index.js'
 
 export const useStoreCharacters = defineStore('storeCharacters', {
   state: () => {
@@ -16,28 +17,26 @@ export const useStoreCharacters = defineStore('storeCharacters', {
   },
   actions: {
     init() {
-      this.getFiltersFromSessionStorage()
+      this.getFiltersFromUrl()
       this.getCharacters()
     },
 
-    getFiltersFromSessionStorage() {
-      if (!sessionStorage.getItem('page')) {
-        sessionStorage.setItem('page', this.requestFilters.page)
-      } else {
-        const storedFilters = {}
-        storedFilters.page = Number(sessionStorage.getItem('page'))
-        filterNames.forEach((name) => {
-          if (sessionStorage.getItem(name)) {
-            storedFilters[name] = sessionStorage.getItem(name)
-          }
-        })
-        this.requestFilters = storedFilters
-      }
+    getFiltersFromUrl() {
+      const query = router.currentRoute.value.query
+      const filters = { page: Number(query.page) || 1 }
+      filterNames.forEach((name) => {
+        if (query[name]) filters[name] = query[name]
+      })
+      this.requestFilters = filters
+    },
+
+    setFiltersInUrl() {
+      router.replace({ query: { ...this.requestFilters } })
     },
 
     async getCharacters() {
       const response = await getCharacters(this.requestFilters)
-      sessionStorage.setItem('page', this.requestFilters.page)
+      this.setFiltersInUrl()
       if (response.status === 200) {
         const data = response.data
         this.charactersTotalCount = data.info.count
@@ -56,18 +55,14 @@ export const useStoreCharacters = defineStore('storeCharacters', {
       if (subFilter !== 'all' && subFilter !== '') {
         this.requestFilters.page = 1
         this.requestFilters[filterName] = subFilter
-        sessionStorage.setItem(filterName, subFilter)
-        this.getCharacters()
       } else {
         delete this.requestFilters[filterName]
-        sessionStorage.removeItem(filterName, subFilter)
-        this.getCharacters()
       }
+      this.getCharacters()
     },
 
     resetStoreFilters() {
       this.requestFilters = { page: 1 }
-      sessionStorage.clear()
       this.getCharacters()
     },
   },
