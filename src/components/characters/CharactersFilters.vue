@@ -26,11 +26,11 @@
     />
     <div class="grid max-w-xl grid-cols-2 gap-x-10 gap-y-1">
       <BaseDropdown
-        v-for="{ name, subFilters } in filterCategories"
+        v-for="[name, values] in Object.entries(filters)"
         :key="name"
         v-model="selectedFilters[name]"
         :label="name"
-        :options="subFilters"
+        :options="values"
         @update:model-value="(value) => setStoreFilter(name, value)"
       />
     </div>
@@ -51,7 +51,7 @@ import { useStoreCharacters } from '@/stores/storeCharacters'
 import { storeToRefs } from 'pinia'
 import BaseDropdown from '../common/BaseDropdown.vue'
 import BaseInput from '../common/BaseInput.vue'
-import filterCategories from '@/mockdata/filterCategories.json'
+import { filters } from '@/constants/filters.js'
 
 const storeCharacters = useStoreCharacters()
 const { requestFilters } = storeToRefs(storeCharacters)
