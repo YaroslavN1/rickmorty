@@ -1,11 +1,11 @@
 <template>
   <section class="flex flex-1 flex-col">
     <div
-      v-if="characterItems.length > 0"
+      v-if="characters.length > 0"
       class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 md:gap-6"
     >
       <CharacterItem
-        v-for="character in characterItems"
+        v-for="character in characters"
         :key="character.id"
         :character="character"
       />
@@ -25,5 +25,5 @@ import CharacterItem from '@/components/characters/character/CharacterItem.vue'
 import { useStoreCharacters } from '@/stores/storeCharacters'
 import { storeToRefs } from 'pinia'
 
-const { charactersLoading, characterItems } = storeToRefs(useStoreCharacters())
+const { charactersLoading, characters } = storeToRefs(useStoreCharacters())
 </script>
