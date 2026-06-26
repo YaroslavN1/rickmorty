@@ -8,14 +8,12 @@
       &lt;
     </BaseButton>
 
-    <input
-      id="pageNumber"
-      ref="pageInputRef"
-      :value="requestFilters.page"
+    <BaseInput
+      v-model="pageInput"
       type="number"
-      class="mx-1 w-14 rounded border border-gray-100 text-center outline-none drop-shadow-sm focus:border-green-300"
-      @focusout="(el) => goToPage(el.target.value)"
-      @keyup.enter="(el) => goToPage(el.target.value)"
+      class="mx-1 w-14 rounded"
+      @focusout="goToPage(pageInput)"
+      @keyup.enter="goToPage(pageInput)"
     />
 
     <BaseButton :disabled="isLastPage" @click="movePage(1)"> &gt; </BaseButton>
@@ -28,6 +26,7 @@
 
 <script setup>
 import BaseButton from '@/components/common/BaseButton.vue'
+import BaseInput from '@/components/common/BaseInput.vue'
 import { useStoreCharacters } from '@/stores/storeCharacters'
 import { storeToRefs } from 'pinia'
 import { computed, ref } from 'vue'
@@ -35,7 +34,7 @@ import { computed, ref } from 'vue'
 const storeCharacters = useStoreCharacters()
 const { requestFilters, lastPage } = storeToRefs(storeCharacters)
 
-const pageInputRef = ref(null)
+const pageInput = ref(requestFilters.value.page)
 
 const isFirstPage = computed(() => requestFilters.value.page === 1)
 const isLastPage = computed(() => requestFilters.value.page === lastPage.value)
@@ -53,23 +52,10 @@ const goToPage = (page) => {
     storeCharacters.getCharacters()
   }
 
-  pageInputRef.value.value = requestFilters.value.page
+  pageInput.value = requestFilters.value.page
 }
 
 const movePage = (pageOffset) => {
   goToPage(requestFilters.value.page + pageOffset)
 }
 </script>
-
-<style scoped>
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-/* Firefox */
-input[type='number'] {
-  -moz-appearance: textfield;
-}
-</style>
