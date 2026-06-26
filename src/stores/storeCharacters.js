@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { getCharacters } from 'rickmortyapi'
-import filterCategories from '@/mockdata/filterCategories.json'
+import { filterNames } from '@/constants/filters.js'
 
 export const useStoreCharacters = defineStore('storeCharacters', {
   state: () => {
@@ -8,7 +8,6 @@ export const useStoreCharacters = defineStore('storeCharacters', {
       requestFilters: {
         page: 1,
       },
-      filterCategories: [],
       charactersLoading: true,
       charactersTotalCount: 0,
       characterItems: [],
@@ -17,7 +16,6 @@ export const useStoreCharacters = defineStore('storeCharacters', {
   },
   actions: {
     init() {
-      this.filterCategories = filterCategories
       this.getFiltersFromSessionStorage()
       this.getCharacters()
     },
@@ -28,9 +26,9 @@ export const useStoreCharacters = defineStore('storeCharacters', {
       } else {
         const storedFilters = {}
         storedFilters.page = Number(sessionStorage.getItem('page'))
-        filterCategories.forEach((el) => {
-          if (sessionStorage.getItem(el.name)) {
-            storedFilters[el.name] = sessionStorage.getItem(el.name)
+        filterNames.forEach((name) => {
+          if (sessionStorage.getItem(name)) {
+            storedFilters[name] = sessionStorage.getItem(name)
           }
         })
         this.requestFilters = storedFilters
