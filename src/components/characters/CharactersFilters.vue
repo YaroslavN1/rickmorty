@@ -51,9 +51,10 @@ import { useStoreCharacters } from '@/stores/storeCharacters'
 import { storeToRefs } from 'pinia'
 import BaseDropdown from '../common/BaseDropdown.vue'
 import BaseInput from '../common/BaseInput.vue'
+import filterCategories from '@/mockdata/filterCategories.json'
 
 const storeCharacters = useStoreCharacters()
-const { requestFilters, filterCategories } = storeToRefs(storeCharacters)
+const { requestFilters } = storeToRefs(storeCharacters)
 const { setStoreFilter, resetStoreFilters } = storeCharacters
 
 const isOpenFilters = ref(false)
