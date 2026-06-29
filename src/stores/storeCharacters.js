@@ -9,7 +9,7 @@ export const useStoreCharacters = defineStore('storeCharacters', {
       requestFilters: {
         page: 1,
       },
-      charactersLoading: true,
+      charactersLoading: false,
       charactersTotalCount: 0,
       characters: [],
       lastPage: 1,
@@ -55,11 +55,11 @@ export const useStoreCharacters = defineStore('storeCharacters', {
 
     async setStoreFilter(name, value) {
       if (!!value && value !== 'all') {
-        this.requestFilters.page = 1
         this.requestFilters[name] = value
       } else {
         delete this.requestFilters[name]
       }
+      this.requestFilters.page = 1
       this.getCharacters()
     },
 
