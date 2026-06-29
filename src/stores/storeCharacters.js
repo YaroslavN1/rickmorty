@@ -35,19 +35,21 @@ export const useStoreCharacters = defineStore('storeCharacters', {
     },
 
     async getCharacters() {
-      const response = await getCharacters(this.requestFilters)
-      this.setFiltersInUrl()
-      if (response.status === 200) {
+      this.charactersLoading = true
+      try {
+        const response = await getCharacters(this.requestFilters)
+        this.setFiltersInUrl()
+        if (response.status !== 200) throw response
         const data = response.data
         this.charactersTotalCount = data.info.count
         this.characters = data.results
         this.lastPage = data.info.pages
-        this.charactersLoading = false
-      } else {
+      } catch {
         this.characters = []
-        this.charactersLoading = false
         this.charactersTotalCount = 0
         this.lastPage = 1
+      } finally {
+        this.charactersLoading = false
       }
     },
 
