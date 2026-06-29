@@ -53,7 +53,7 @@ export const useStoreCharacters = defineStore('storeCharacters', {
       }
     },
 
-    async setStoreFilter(name, value) {
+    setStoreFilter(name, value) {
       if (!!value && value !== 'all') {
         this.requestFilters[name] = value
       } else {
