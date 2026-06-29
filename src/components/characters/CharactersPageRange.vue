@@ -13,14 +13,14 @@ import { computed } from 'vue'
 import { useStoreCharacters } from '@/stores/storeCharacters'
 import { storeToRefs } from 'pinia'
 
-const { requestFilters, charactersTotalCount, characterItems } =
+const { requestFilters, charactersTotalCount, characters } =
   storeToRefs(useStoreCharacters())
 
 const itemsRange = computed(() => {
   const currentPage = requestFilters.value.page
   const defaultPageSize = 20
 
-  if (characterItems.value.length === 0) {
+  if (characters.value.length === 0) {
     return [0, 0]
   }
 

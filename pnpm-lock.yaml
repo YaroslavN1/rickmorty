@@ -23,6 +23,9 @@ importers:
       vue:
         specifier: ^3.5.38
         version: 3.5.38
+      vue-router:
+        specifier: '4'
+        version: 4.6.4(vue@3.5.38)
     devDependencies:
       '@vitejs/plugin-vue':
         specifier: ^6.0.7
@@ -1822,6 +1825,15 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /vue-router@4.6.4(vue@3.5.38):
+    resolution: {integrity: sha512-Hz9q5sa33Yhduglwz6g9skT8OBPii+4bFn88w6J+J4MfEo4KRRpmiNG/hHHkdbRFlLBOqxN8y8gf2Fb0MTUgVg==}
+    peerDependencies:
+      vue: ^3.5.0
+    dependencies:
+      '@vue/devtools-api': 6.6.4
+      vue: 3.5.38
+    dev: false
 
   /vue@3.5.38:
     resolution: {integrity: sha512-vAMKHfImQlYSy0C+PBue4s3ERZ2xGKfgZg5GXAsLInq1dyh2H78ILVP5sK0KPFPVW4kv+OGCIvBEondcjpZp7A==}
