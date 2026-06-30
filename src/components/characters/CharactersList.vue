@@ -15,7 +15,9 @@
       v-else
       class="flex flex-1 items-center justify-center text-xl text-gray-400"
     >
-      {{ charactersLoading ? 'Loading...' : 'No characters found...' }}
+      <p v-if="charactersLoading">Loading...</p>
+      <p v-else-if="fetchingError">Server error</p>
+      <p v-else>No characters found</p>
     </div>
   </section>
 </template>
@@ -25,5 +27,6 @@ import CharacterItem from '@/components/characters/character/CharacterItem.vue'
 import { useStoreCharacters } from '@/stores/storeCharacters'
 import { storeToRefs } from 'pinia'
 
-const { charactersLoading, characters } = storeToRefs(useStoreCharacters())
+const { charactersLoading, fetchingError, characters } =
+  storeToRefs(useStoreCharacters())
 </script>

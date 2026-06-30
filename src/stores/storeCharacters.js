@@ -10,6 +10,7 @@ export const useStoreCharacters = defineStore('storeCharacters', {
         page: 1,
       },
       charactersLoading: false,
+      fetchingError: false,
       charactersTotalCount: 0,
       characters: [],
       lastPage: 1,
@@ -35,6 +36,7 @@ export const useStoreCharacters = defineStore('storeCharacters', {
     },
 
     async getCharacters() {
+      this.fetchingError = false
       this.charactersLoading = true
       try {
         const response = await getCharacters(this.requestFilters)
@@ -44,7 +46,8 @@ export const useStoreCharacters = defineStore('storeCharacters', {
         this.charactersTotalCount = data.info.count
         this.characters = data.results
         this.lastPage = data.info.pages
-      } catch {
+      } catch (error) {
+        this.fetchingError = error.status !== 404
         this.characters = []
         this.charactersTotalCount = 0
         this.lastPage = 1
