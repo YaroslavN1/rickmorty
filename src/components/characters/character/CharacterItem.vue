@@ -40,17 +40,15 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 import CharacterItemModal from '@/components/characters/character/CharacterItemModal.vue'
 import avatarPlaceholder from '@/images/avatar_placeholder.jpeg'
+import { Character } from '@/types/character'
 
-defineProps({
-  character: {
-    type: Object,
-    required: true,
-  },
-})
+defineProps<{
+  character: Character
+}>()
 
 const imgLoaded = ref(false)
 

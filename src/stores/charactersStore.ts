@@ -3,13 +3,14 @@ import { ref } from 'vue'
 import { getCharacters as fetchCharacters } from 'rickmortyapi'
 import { filterNames } from '@/constants/filters.js'
 import router from '@/router/index.js'
+import { Character } from '@/types/character'
 
 export const useCharactersStore = defineStore('charactersStore', () => {
   const requestFilters = ref({ page: 1 })
   const charactersLoading = ref(false)
   const fetchingError = ref(false)
   const charactersTotalCount = ref(0)
-  const characters = ref([])
+  const characters = ref<Character[]>([])
   const lastPage = ref(1)
 
   function init() {
@@ -38,11 +39,11 @@ export const useCharactersStore = defineStore('charactersStore', () => {
       setFiltersInUrl()
       if (response.status !== 200) throw response
       const data = response.data
-      charactersTotalCount.value = data.info.count
-      characters.value = data.results
-      lastPage.value = data.info.pages
+      characters.value = data.results || []
+      charactersTotalCount.value = data.info?.count ?? 0
+      lastPage.value = data.info?.pages ?? 1
     } catch (error) {
-      fetchingError.value = error.status !== 404
+      fetchingError.value = (error as { status?: number }).status !== 404
       characters.value = []
       charactersTotalCount.value = 0
       lastPage.value = 1

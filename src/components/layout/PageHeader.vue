@@ -7,7 +7,7 @@
   </header>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import logoWebp from '@/images/rickandmorty_logo.webp'
 import logoPng from '@/images/rickandmorty_logo.png'
 </script>
