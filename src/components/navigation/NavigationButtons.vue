@@ -45,12 +45,12 @@
 <script setup>
 import BaseButton from '@/components/common/BaseButton.vue'
 import BaseInput from '@/components/common/BaseInput.vue'
-import { useStoreCharacters } from '@/stores/storeCharacters'
+import { useCharactersStore } from '@/stores/charactersStore'
 import { storeToRefs } from 'pinia'
 import { computed, ref } from 'vue'
 
-const storeCharacters = useStoreCharacters()
-const { requestFilters, lastPage } = storeToRefs(storeCharacters)
+const charactersStore = useCharactersStore()
+const { requestFilters, lastPage } = storeToRefs(charactersStore)
 
 const pageInput = ref(requestFilters.value.page)
 
@@ -67,7 +67,7 @@ const goToPage = (page) => {
 
   if (isValidPage && !isCurrentPage) {
     requestFilters.value.page = clampedPage
-    storeCharacters.getCharacters()
+    charactersStore.getCharacters()
   }
 
   pageInput.value = requestFilters.value.page

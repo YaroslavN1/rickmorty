@@ -10,11 +10,11 @@
 
 <script setup>
 import { computed } from 'vue'
-import { useStoreCharacters } from '@/stores/storeCharacters'
+import { useCharactersStore } from '@/stores/charactersStore'
 import { storeToRefs } from 'pinia'
 
 const { requestFilters, charactersTotalCount, characters } =
-  storeToRefs(useStoreCharacters())
+  storeToRefs(useCharactersStore())
 
 const itemsRange = computed(() => {
   const currentPage = requestFilters.value.page

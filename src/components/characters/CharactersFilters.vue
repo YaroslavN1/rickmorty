@@ -47,15 +47,15 @@
 
 <script setup>
 import { computed, onBeforeMount, ref } from 'vue'
-import { useStoreCharacters } from '@/stores/storeCharacters'
+import { useCharactersStore } from '@/stores/charactersStore'
 import { storeToRefs } from 'pinia'
 import BaseDropdown from '../common/BaseDropdown.vue'
 import BaseInput from '../common/BaseInput.vue'
 import { filters } from '@/constants/filters.js'
 
-const storeCharacters = useStoreCharacters()
-const { requestFilters } = storeToRefs(storeCharacters)
-const { setStoreFilter, resetStoreFilters } = storeCharacters
+const charactersStore = useCharactersStore()
+const { requestFilters } = storeToRefs(charactersStore)
+const { setStoreFilter, resetStoreFilters } = charactersStore
 
 const isOpenFilters = ref(false)
 

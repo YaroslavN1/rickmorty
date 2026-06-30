@@ -3,7 +3,7 @@ import { getCharacters } from 'rickmortyapi'
 import { filterNames } from '@/constants/filters.js'
 import router from '@/router/index.js'
 
-export const useStoreCharacters = defineStore('storeCharacters', {
+export const useCharactersStore = defineStore('charactersStore', {
   state: () => {
     return {
       requestFilters: {
