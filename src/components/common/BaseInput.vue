@@ -2,16 +2,23 @@
   <input
     :value="modelValue"
     class="border border-gray-300 text-center outline-none placeholder:text-gray-300 focus:border-green-300"
-    @input="$emit('update:modelValue', $event.target.value)"
+    @input="
+      $emit('update:modelValue', ($event.target as HTMLInputElement).value)
+    "
   />
 </template>
 
-<script setup>
-defineProps({
-  modelValue: { type: [String, Number], default: '' },
-})
+<script setup lang="ts">
+withDefaults(
+  defineProps<{
+    modelValue?: string | number
+  }>(),
+  { modelValue: '' },
+)
 
-defineEmits(['update:modelValue'])
+defineEmits<{
+  'update:modelValue': [value: string | number]
+}>()
 </script>
 
 <style scoped>

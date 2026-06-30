@@ -4,7 +4,9 @@
     <select
       :value="modelValue"
       class="w-full text-ellipsis text-center capitalize outline-none"
-      @change="$emit('update:modelValue', $event.target.value)"
+      @change="
+        $emit('update:modelValue', ($event.target as HTMLSelectElement).value)
+      "
     >
       <option value="all">-</option>
       <option v-for="option in options" :key="option" :value="option">
@@ -14,12 +16,19 @@
   </label>
 </template>
 
-<script setup>
-defineProps({
-  label: { type: String, required: true },
-  options: { type: Array, required: true },
-  modelValue: { type: String, default: 'all' },
-})
+<script setup lang="ts">
+withDefaults(
+  defineProps<{
+    label: string
+    options: string[]
+    modelValue?: string
+  }>(),
+  {
+    modelValue: 'all',
+  },
+)
 
-defineEmits(['update:modelValue'])
+defineEmits<{
+  'update:modelValue': [value: string]
+}>()
 </script>
