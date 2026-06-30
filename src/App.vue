@@ -27,9 +27,9 @@ import CharactersFilters from '@/components/characters/CharactersFilters.vue'
 import CharactersPageRange from '@/components/characters/CharactersPageRange.vue'
 import NavigationButtons from '@/components/navigation/NavigationButtons.vue'
 import CharactersList from '@/components/characters/CharactersList.vue'
-import { useStoreCharacters } from '@/stores/storeCharacters'
+import { useCharactersStore } from '@/stores/charactersStore'
 
-const storeCharacters = useStoreCharacters()
+const charactersStore = useCharactersStore()
 
-storeCharacters.init()
+charactersStore.init()
 </script>

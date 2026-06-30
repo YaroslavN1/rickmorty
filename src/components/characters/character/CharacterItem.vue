@@ -4,7 +4,7 @@
   >
     <a
       href="/"
-      @click.prevent="isModalCharacterItemOpen = !isModalCharacterItemOpen"
+      @click.prevent="isCharacterItemModalOpen = !isCharacterItemModalOpen"
     >
       <div class="mb-3">
         <img
@@ -32,9 +32,9 @@
       </div>
     </a>
 
-    <ModalCharacterItem
-      v-if="isModalCharacterItemOpen"
-      v-model:is-open="isModalCharacterItemOpen"
+    <CharacterItemModal
+      v-if="isCharacterItemModalOpen"
+      v-model:is-open="isCharacterItemModalOpen"
       :character="character"
     />
   </div>
@@ -42,7 +42,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import ModalCharacterItem from '@/components/characters/character/ModalCharacterItem.vue'
+import CharacterItemModal from '@/components/characters/character/CharacterItemModal.vue'
 import avatarPlaceholder from '@/images/avatar_placeholder.jpeg'
 
 defineProps({
@@ -54,5 +54,5 @@ defineProps({
 
 const imgLoaded = ref(false)
 
-const isModalCharacterItemOpen = ref(false)
+const isCharacterItemModalOpen = ref(false)
 </script>

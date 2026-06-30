@@ -24,9 +24,9 @@
 
 <script setup>
 import CharacterItem from '@/components/characters/character/CharacterItem.vue'
-import { useStoreCharacters } from '@/stores/storeCharacters'
+import { useCharactersStore } from '@/stores/charactersStore'
 import { storeToRefs } from 'pinia'
 
 const { charactersLoading, fetchingError, characters } =
-  storeToRefs(useStoreCharacters())
+  storeToRefs(useCharactersStore())
 </script>
