@@ -1,74 +1,83 @@
 import { defineStore } from 'pinia'
-import { getCharacters } from 'rickmortyapi'
+import { ref } from 'vue'
+import { getCharacters as fetchCharacters } from 'rickmortyapi'
 import { filterNames } from '@/constants/filters.js'
 import router from '@/router/index.js'
 
-export const useCharactersStore = defineStore('charactersStore', {
-  state: () => {
-    return {
-      requestFilters: {
-        page: 1,
-      },
-      charactersLoading: false,
-      fetchingError: false,
-      charactersTotalCount: 0,
-      characters: [],
-      lastPage: 1,
+export const useCharactersStore = defineStore('charactersStore', () => {
+  const requestFilters = ref({ page: 1 })
+  const charactersLoading = ref(false)
+  const fetchingError = ref(false)
+  const charactersTotalCount = ref(0)
+  const characters = ref([])
+  const lastPage = ref(1)
+
+  function init() {
+    getFiltersFromUrl()
+    getCharacters()
+  }
+
+  function getFiltersFromUrl() {
+    const query = router.currentRoute.value.query
+    const filters = { page: Number(query.page) || 1 }
+    filterNames.forEach((name) => {
+      if (query[name]) filters[name] = query[name]
+    })
+    requestFilters.value = filters
+  }
+
+  function setFiltersInUrl() {
+    router.replace({ query: { ...requestFilters.value } })
+  }
+
+  async function getCharacters() {
+    fetchingError.value = false
+    charactersLoading.value = true
+    try {
+      const response = await fetchCharacters(requestFilters.value)
+      setFiltersInUrl()
+      if (response.status !== 200) throw response
+      const data = response.data
+      charactersTotalCount.value = data.info.count
+      characters.value = data.results
+      lastPage.value = data.info.pages
+    } catch (error) {
+      fetchingError.value = error.status !== 404
+      characters.value = []
+      charactersTotalCount.value = 0
+      lastPage.value = 1
+    } finally {
+      charactersLoading.value = false
     }
-  },
-  actions: {
-    init() {
-      this.getFiltersFromUrl()
-      this.getCharacters()
-    },
+  }
 
-    getFiltersFromUrl() {
-      const query = router.currentRoute.value.query
-      const filters = { page: Number(query.page) || 1 }
-      filterNames.forEach((name) => {
-        if (query[name]) filters[name] = query[name]
-      })
-      this.requestFilters = filters
-    },
+  function setStoreFilter(name, value) {
+    if (!!value && value !== 'all') {
+      requestFilters.value[name] = value
+    } else {
+      delete requestFilters.value[name]
+    }
+    requestFilters.value.page = 1
+    getCharacters()
+  }
 
-    setFiltersInUrl() {
-      router.replace({ query: { ...this.requestFilters } })
-    },
+  function resetStoreFilters() {
+    requestFilters.value = { page: 1 }
+    getCharacters()
+  }
 
-    async getCharacters() {
-      this.fetchingError = false
-      this.charactersLoading = true
-      try {
-        const response = await getCharacters(this.requestFilters)
-        this.setFiltersInUrl()
-        if (response.status !== 200) throw response
-        const data = response.data
-        this.charactersTotalCount = data.info.count
-        this.characters = data.results
-        this.lastPage = data.info.pages
-      } catch (error) {
-        this.fetchingError = error.status !== 404
-        this.characters = []
-        this.charactersTotalCount = 0
-        this.lastPage = 1
-      } finally {
-        this.charactersLoading = false
-      }
-    },
-
-    setStoreFilter(name, value) {
-      if (!!value && value !== 'all') {
-        this.requestFilters[name] = value
-      } else {
-        delete this.requestFilters[name]
-      }
-      this.requestFilters.page = 1
-      this.getCharacters()
-    },
-
-    resetStoreFilters() {
-      this.requestFilters = { page: 1 }
-      this.getCharacters()
-    },
-  },
+  return {
+    requestFilters,
+    charactersLoading,
+    fetchingError,
+    charactersTotalCount,
+    characters,
+    lastPage,
+    init,
+    getFiltersFromUrl,
+    setFiltersInUrl,
+    getCharacters,
+    setStoreFilter,
+    resetStoreFilters,
+  }
 })
