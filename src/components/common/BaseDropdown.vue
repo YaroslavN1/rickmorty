@@ -20,7 +20,7 @@
 withDefaults(
   defineProps<{
     label: string
-    options: string[]
+    options: readonly string[]
     modelValue?: string
   }>(),
   {

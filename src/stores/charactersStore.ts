@@ -1,12 +1,15 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { getCharacters as fetchCharacters } from 'rickmortyapi'
-import { filterNames } from '@/constants/filters.js'
+import { filterStringKeys } from '@/constants/filters.js'
 import router from '@/router/index.js'
-import { Character } from '@/types/character'
+import type { Character } from '@/types/character'
+import type { FilterStringKey } from '@/constants/filters'
+
+type RequestFilters = { page: number } & { [K in FilterStringKey]?: string }
 
 export const useCharactersStore = defineStore('charactersStore', () => {
-  const requestFilters = ref({ page: 1 })
+  const requestFilters = ref<RequestFilters>({ page: 1 })
   const charactersLoading = ref(false)
   const fetchingError = ref(false)
   const charactersTotalCount = ref(0)
@@ -20,9 +23,9 @@ export const useCharactersStore = defineStore('charactersStore', () => {
 
   function getFiltersFromUrl() {
     const query = router.currentRoute.value.query
-    const filters = { page: Number(query.page) || 1 }
-    filterNames.forEach((name) => {
-      if (query[name]) filters[name] = query[name]
+    const filters: RequestFilters = { page: Number(query.page) || 1 }
+    filterStringKeys.forEach((key) => {
+      if (query[key]) filters[key] = query[key] as string
     })
     requestFilters.value = filters
   }
@@ -52,7 +55,7 @@ export const useCharactersStore = defineStore('charactersStore', () => {
     }
   }
 
-  function setStoreFilter(name, value) {
+  function setStoreFilter(name: FilterStringKey, value: string) {
     if (!!value && value !== 'all') {
       requestFilters.value[name] = value
     } else {

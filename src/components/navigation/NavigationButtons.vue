@@ -42,7 +42,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import BaseButton from '@/components/common/BaseButton.vue'
 import BaseInput from '@/components/common/BaseInput.vue'
 import { useCharactersStore } from '@/stores/charactersStore'
@@ -57,10 +57,10 @@ const pageInput = ref(requestFilters.value.page)
 const isFirstPage = computed(() => requestFilters.value.page === 1)
 const isLastPage = computed(() => requestFilters.value.page === lastPage.value)
 
-const clampPage = (page) => Math.max(Math.min(page, lastPage.value), 1)
+const clampPage = (page: number) => Math.max(Math.min(page, lastPage.value), 1)
 
-const goToPage = (page) => {
-  const parsedPage = parseInt(page)
+const goToPage = (page: string | number) => {
+  const parsedPage = parseInt(String(page))
   const isValidPage = !Number.isNaN(parsedPage)
   const clampedPage = clampPage(parsedPage)
   const isCurrentPage = clampedPage === requestFilters.value.page
@@ -73,7 +73,7 @@ const goToPage = (page) => {
   pageInput.value = requestFilters.value.page
 }
 
-const movePage = (pageOffset) => {
+const movePage = (pageOffset: number) => {
   goToPage(requestFilters.value.page + pageOffset)
 }
 </script>

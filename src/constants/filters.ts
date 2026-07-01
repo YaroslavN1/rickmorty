@@ -189,12 +189,17 @@ export type CharacterGender = (typeof genderValues)[number]
 export type CharacterSpecies = (typeof speciesValues)[number]
 export type CharacterType = (typeof typeValues)[number]
 
-export const filters = {
+export const filterBaseKeys = ['status', 'species', 'type', 'gender'] as const
+export type FilterBaseKey = (typeof filterBaseKeys)[number]
+
+export const baseFilters = {
   status: statusValues,
   species: speciesValues,
   type: typeValues,
   gender: genderValues,
-}
+} satisfies Record<(typeof filterBaseKeys)[number], readonly string[]>
 
-export type FilterName = keyof typeof filters
-export const filterNames = Object.keys(filters) as FilterName[]
+export const filterStringKeys = [...filterBaseKeys, 'name'] as const
+export type FilterStringKey = (typeof filterStringKeys)[number]
+
+export const filterKeys = [...filterStringKeys, 'page'] as const
