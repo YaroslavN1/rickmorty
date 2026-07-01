@@ -53,13 +53,14 @@ import type { Character } from '@/types/character'
 
 const props = defineProps<{
   character: Character
-  isOpen: boolean
 }>()
 
-const emit = defineEmits(['update:isOpen'])
+const emit = defineEmits<{
+  close: []
+}>()
 
 const closeModal = () => {
-  emit('update:isOpen', false)
+  emit('close')
 }
 const characterModalRef = ref<HTMLElement | null>(null)
 onClickOutside(characterModalRef, () => closeModal())

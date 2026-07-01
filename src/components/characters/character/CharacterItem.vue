@@ -34,8 +34,8 @@
 
     <CharacterItemModal
       v-if="isCharacterItemModalOpen"
-      v-model:is-open="isCharacterItemModalOpen"
       :character="character"
+      @close="isCharacterItemModalOpen = false"
     />
   </div>
 </template>
