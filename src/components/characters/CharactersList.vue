@@ -22,7 +22,7 @@
   </section>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import CharacterItem from '@/components/characters/character/CharacterItem.vue'
 import { useCharactersStore } from '@/stores/charactersStore'
 import { storeToRefs } from 'pinia'

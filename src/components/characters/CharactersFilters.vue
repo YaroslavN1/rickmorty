@@ -22,11 +22,11 @@
       class="h-8 w-2/5 rounded-2xl"
       placeholder="Search by name..."
       type="text"
-      @update:model-value="(value) => setStoreFilter('name', value)"
+      @update:model-value="(value) => setStoreFilter('name', value as string)"
     />
     <div class="grid max-w-xl grid-cols-2 gap-x-10 gap-y-1">
       <BaseDropdown
-        v-for="[name, values] in Object.entries(filters)"
+        v-for="[name, values] in baseFilterEntries"
         :key="name"
         v-model="selectedFilters[name]"
         :label="name"
@@ -45,13 +45,14 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, onBeforeMount, ref } from 'vue'
 import { useCharactersStore } from '@/stores/charactersStore'
 import { storeToRefs } from 'pinia'
 import BaseDropdown from '../common/BaseDropdown.vue'
 import BaseInput from '../common/BaseInput.vue'
-import { filters } from '@/constants/filters.js'
+import { baseFilters } from '@/constants/filters.js'
+import type { FilterStringKey, FilterBaseKey } from '@/constants/filters.js'
 
 const charactersStore = useCharactersStore()
 const { requestFilters } = storeToRefs(charactersStore)
@@ -59,7 +60,10 @@ const { setStoreFilter, resetStoreFilters } = charactersStore
 
 const isOpenFilters = ref(false)
 
-const filtersDefault = {
+const baseFilterEntries = computed(
+  () => Object.entries(baseFilters) as [FilterBaseKey, readonly string[]][],
+)
+const filtersDefault: Record<FilterStringKey, string> = {
   name: '',
   status: 'all',
   species: 'all',
@@ -75,10 +79,9 @@ const isModifiedFilters = computed(
     0,
 )
 const syncFiltersFromStore = () => {
-  Object.keys(selectedFilters.value).forEach((el) => {
-    if (requestFilters.value[el]) {
-      selectedFilters.value[el] = requestFilters.value[el]
-    }
+  ;(Object.keys(selectedFilters.value) as FilterStringKey[]).forEach((key) => {
+    const storeValue = requestFilters.value[key]
+    if (storeValue) selectedFilters.value[key] = storeValue
   })
 }
 const resetFilters = () => {
@@ -88,7 +91,7 @@ const resetFilters = () => {
 
 const isIconAnimation = ref(true)
 if (!sessionStorage.getItem('iconAnimated')) {
-  sessionStorage.setItem('iconAnimated', true)
+  sessionStorage.setItem('iconAnimated', 'true')
 } else {
   isIconAnimation.value = false
 }

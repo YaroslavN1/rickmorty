@@ -8,13 +8,10 @@
   </button>
 </template>
 
-<script setup>
-defineProps({
-  disabled: {
-    type: Boolean,
-    default: false,
-  },
-})
+<script setup lang="ts">
+defineProps<{
+  disabled?: boolean
+}>()
 
 defineEmits(['click'])
 </script>

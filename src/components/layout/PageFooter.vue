@@ -23,7 +23,7 @@
   </footer>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import logoWebpBlack from '@/images/rickandmorty_logo_black.webp'
 import logoPngBlack from '@/images/rickandmorty_logo_black.png'
 </script>

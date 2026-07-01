@@ -13,7 +13,7 @@ Personal Vue 3 project for browsing characters from the [Rick and Morty API](htt
 
 ## Tech stack
 
-- [Vue 3](https://vuejs.org/) (`<script setup>`) + [Vite](https://vitejs.dev/)
+- [Vue 3](https://vuejs.org/) (`<script setup lang="ts">`) + [Vite](https://vitejs.dev/) + [TypeScript](https://www.typescriptlang.org/)
 - [Pinia](https://pinia.vuejs.org/) for state management
 - [Tailwind CSS](https://tailwindcss.com/) + [Bulma](https://bulma.io/) for styling
 - [`rickmortyapi`](https://www.npmjs.com/package/rickmortyapi) as the API client
@@ -32,11 +32,14 @@ pnpm dev
 
 ## Scripts
 
-| Command        | Description                          |
-| -------------- | ------------------------------------ |
-| `pnpm dev`     | Start the Vite dev server            |
-| `pnpm build`   | Production build to `dist/`          |
-| `pnpm preview` | Preview the production build locally |
+| Command           | Description                          |
+| ----------------- | ------------------------------------ |
+| `pnpm dev`        | Start the Vite dev server            |
+| `pnpm build`      | Type-check and production build      |
+| `pnpm preview`    | Preview the production build locally |
+| `pnpm type-check` | Type-check without building          |
+| `pnpm lint`       | Lint with ESLint                     |
+| `pnpm format`     | Format with Prettier                 |
 
 ## Deployment
 

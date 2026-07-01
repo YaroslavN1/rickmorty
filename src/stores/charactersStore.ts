@@ -1,15 +1,19 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { getCharacters as fetchCharacters } from 'rickmortyapi'
-import { filterNames } from '@/constants/filters.js'
+import { filterStringKeys } from '@/constants/filters.js'
 import router from '@/router/index.js'
+import type { Character } from '@/types/character'
+import type { FilterStringKey } from '@/constants/filters'
+
+type RequestFilters = { page: number } & { [K in FilterStringKey]?: string }
 
 export const useCharactersStore = defineStore('charactersStore', () => {
-  const requestFilters = ref({ page: 1 })
+  const requestFilters = ref<RequestFilters>({ page: 1 })
   const charactersLoading = ref(false)
   const fetchingError = ref(false)
   const charactersTotalCount = ref(0)
-  const characters = ref([])
+  const characters = ref<Character[]>([])
   const lastPage = ref(1)
 
   function init() {
@@ -19,9 +23,9 @@ export const useCharactersStore = defineStore('charactersStore', () => {
 
   function getFiltersFromUrl() {
     const query = router.currentRoute.value.query
-    const filters = { page: Number(query.page) || 1 }
-    filterNames.forEach((name) => {
-      if (query[name]) filters[name] = query[name]
+    const filters: RequestFilters = { page: Number(query.page) || 1 }
+    filterStringKeys.forEach((key) => {
+      if (query[key]) filters[key] = query[key] as string
     })
     requestFilters.value = filters
   }
@@ -38,11 +42,11 @@ export const useCharactersStore = defineStore('charactersStore', () => {
       setFiltersInUrl()
       if (response.status !== 200) throw response
       const data = response.data
-      charactersTotalCount.value = data.info.count
-      characters.value = data.results
-      lastPage.value = data.info.pages
+      characters.value = data.results || []
+      charactersTotalCount.value = data.info?.count ?? 0
+      lastPage.value = data.info?.pages ?? 1
     } catch (error) {
-      fetchingError.value = error.status !== 404
+      fetchingError.value = (error as { status?: number }).status !== 404
       characters.value = []
       charactersTotalCount.value = 0
       lastPage.value = 1
@@ -51,7 +55,7 @@ export const useCharactersStore = defineStore('charactersStore', () => {
     }
   }
 
-  function setStoreFilter(name, value) {
+  function setStoreFilter(name: FilterStringKey, value: string) {
     if (!!value && value !== 'all') {
       requestFilters.value[name] = value
     } else {

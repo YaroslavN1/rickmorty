@@ -45,28 +45,24 @@
   </teleport>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 import BaseButton from '@/components/common/BaseButton.vue'
 import { onClickOutside } from '@vueuse/core'
+import type { Character } from '@/types/character'
 
-const props = defineProps({
-  character: {
-    type: Object,
-    required: true,
-  },
-  isOpen: {
-    type: Boolean,
-    default: false,
-  },
-})
+const props = defineProps<{
+  character: Character
+}>()
 
-const emit = defineEmits(['update:isOpen'])
+const emit = defineEmits<{
+  close: []
+}>()
 
 const closeModal = () => {
-  emit('update:isOpen', false)
+  emit('close')
 }
-const characterModalRef = ref(null)
+const characterModalRef = ref<HTMLElement | null>(null)
 onClickOutside(characterModalRef, () => closeModal())
 
 const displayedCharacterKeys = [
@@ -79,11 +75,11 @@ const displayedCharacterKeys = [
   'location',
 ]
 
-const characterKeysFiltered = Object.entries(props.character).filter(
-  ([key, _]) => displayedCharacterKeys.includes(key),
+const characterKeysFiltered = Object.entries(props.character).filter(([key]) =>
+  displayedCharacterKeys.includes(key),
 )
 
-const formatDate = (date) =>
+const formatDate = (date: Date) =>
   new Intl.DateTimeFormat('en-GB', {
     year: 'numeric',
     month: 'long',
