@@ -46,8 +46,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import BaseButton from '@/components/common/BaseButton.vue'
 import { onClickOutside } from '@vueuse/core'
 import type { Character } from '@/types/character'
 

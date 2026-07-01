@@ -43,11 +43,7 @@
 </template>
 
 <script setup lang="ts">
-import BaseButton from '@/components/common/BaseButton.vue'
-import BaseInput from '@/components/common/BaseInput.vue'
 import { useCharactersStore } from '@/stores/charactersStore'
-import { storeToRefs } from 'pinia'
-import { computed, ref } from 'vue'
 
 const charactersStore = useCharactersStore()
 const { requestFilters, lastPage } = storeToRefs(charactersStore)
