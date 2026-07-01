@@ -15,7 +15,8 @@ Personal Vue 3 project for browsing characters from the [Rick and Morty API](htt
 
 - [Vue 3](https://vuejs.org/) (`<script setup lang="ts">`) + [Vite](https://vitejs.dev/) + [TypeScript](https://www.typescriptlang.org/)
 - [Pinia](https://pinia.vuejs.org/) for state management
-- [Tailwind CSS](https://tailwindcss.com/) + [Bulma](https://bulma.io/) for styling
+- [Tailwind CSS](https://tailwindcss.com/) for styling
+- [`unplugin-vue-components`](https://github.com/unplugin/unplugin-vue-components) + [`unplugin-auto-import`](https://github.com/unplugin/unplugin-auto-import) for auto-imports
 - [`rickmortyapi`](https://www.npmjs.com/package/rickmortyapi) as the API client
 
 ## Prerequisites
